@@ -8,7 +8,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 1. ADD SECURITY HEADERS to allow your CSS and Fonts
+// THIS IS THE PATH-PROOF FIX:
+// __dirname is the folder where 'server.js' lives (backend/).
+// '..' moves up to the root folder.
+// 'frontend' moves into your frontend directory.
+const frontendPath = path.resolve(__dirname, '..', 'frontend');
+
+console.log("DEBUG: Server is looking for files at:", frontendPath);
+
+// Security Headers
 app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
@@ -17,13 +25,10 @@ app.use((req, res, next) => {
     next();
 });
 
-// 2. SERVE FRONTEND
-const frontendPath = path.join(process.cwd(), 'frontend');
-console.log("DEBUG: The server is looking for files here:", frontendPath);
-
+// Serve Static Files
 app.use(express.static(frontendPath));
 
-// 3. ROUTES
+// Routes
 app.get('/', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
