@@ -13,7 +13,8 @@ app.use(cors());
 app.use(express.json());
 
 // --- SERVE FRONTEND ---
-const frontendPath = path.resolve(__dirname, '..', 'frontend');
+// UPDATED: Changed from '..' to '../..' to correctly reach the frontend folder
+const frontendPath = path.resolve(__dirname, '../..', 'frontend');
 app.use(express.static(frontendPath));
 
 // --- DEBUG: Check if Environment Variables loaded ---
