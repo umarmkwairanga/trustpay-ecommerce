@@ -2,29 +2,24 @@ require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs'); // Added to list files
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const frontendPath = path.resolve(__dirname, '..', 'frontend');
+// Point to the 'public' subfolder inside 'frontend'
+const frontendPath = path.resolve(__dirname, '..', 'frontend', 'public');
 
+// Serve static files from the public directory
+app.use(express.static(frontendPath));
+
+// Routes
 app.get('/', (req, res) => {
-    // List what is in the folder so we can debug
-    let files = [];
-    try {
-        files = fs.readdirSync(frontendPath);
-    } catch (e) {
-        return res.send("DEBUG: Folder not found at " + frontendPath);
-    }
-    
-    const p = path.join(frontendPath, 'index.html');
-    if (fs.existsSync(p)) {
-        res.sendFile(p);
-    } else {
-        res.send("DEBUG: index.html not found. Folder contains: " + JSON.stringify(files));
-    }
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+app.get('/shop', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'shop.html'));
 });
 
 const PORT = process.env.PORT || 3000;
