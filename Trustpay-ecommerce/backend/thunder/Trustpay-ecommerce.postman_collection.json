@@ -1,0 +1,196 @@
+{
+  "info": {
+    "_postman_id": "trustpay-ecommerce-collection",
+    "name": "Trustpay-ecommerce (Thunder Client import)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "productId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth - Login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Products - List",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Products - Get By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products/{{productId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "products",
+            "{{productId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Products - Create",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Sample Product\",\n  \"price\": 19.99,\n  \"description\": \"A short product description\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/products",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cart - View",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/cart",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "cart"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cart - Add Item",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productId\": \"{{productId}}\",\n  \"quantity\": 1\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/cart",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "cart"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cart - Remove Item",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/cart/{{productId}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "cart",
+            "{{productId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

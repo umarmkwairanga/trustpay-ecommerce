@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Admin Product Manager</h1>
+    <form id="form">
+        <input id="name" placeholder="Name" required>
+        <input id="price" type="number" placeholder="Price" required>
+        <select id="category">
+            <option value="Furnitures">Furnitures</option>
+            <option value="Cars">Cars</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Clothing">Clothing</option>
+            <option value="Books">Books</option>
+            <option value="Kitchenware">Kitchenware</option>
+            <option value="Sports">Sports</option>
+            <option value="Others">Others</option>
+        </select>
+        <input type="file" id="image" accept="image/*">
+        <button type="submit">Add Product</button>
+    </form>
+    <ul id="list"></ul>
+
+    <script>
+        const render = async () => {
+            const res = await fetch('http://localhost:3000/api/products');
+            const data = await res.json();
+            document.getElementById('list').innerHTML = data.map(p => `
+                <li>
+                    ${p.image ? `<img src="http://localhost:3000${p.image}" width="50">` : ''}
+                    ${p.name} - $${p.price} [${p.category}]
+                    <button onclick="edit('${p._id}', '${p.name}', ${p.price})">Edit</button>
+                    <button onclick="del('${p._id}')">Delete</button>
+                </li>`).join('');
+        };
+        document.getElementById('form').onsubmit = async (e) => {
+            e.preventDefault();
+            const fd = new FormData();
+            fd.append('name', document.getElementById('name').value);
+            fd.append('price', document.getElementById('price').value);
+            fd.append('category', document.getElementById('category').value);
+            fd.append('image', document.getElementById('image').files[0]);
+            await fetch('http://localhost:3000/api/products', { method: 'POST', body: fd });
+            document.getElementById('form').reset();
+            render();
+        };
+        async function edit(id, name, price) {
+            const n = prompt("New Name:", name);
+            const p = prompt("New Price:", price);
+            if (n && p) {
+                await fetch(`http://localhost:3000/api/products/${id}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ name: n, price: p })
+                });
+                render();
+            }
+        }
+        async function del(id) {
+            await fetch(`http://localhost:3000/api/products/${id}`, { method: 'DELETE' });
+            render();
+        }
+        render();
+    </script>
+</body>
+</html>
