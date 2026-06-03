@@ -2,6 +2,7 @@ require('dotenv').config({ path: __dirname + '/.env' });
 
 const express = require('express');
 const cors = require('cors');
+const path = require('path'); // Added path module
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const connectDB = require('./db');
@@ -10,6 +11,10 @@ const Product = require('./models/Product');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// --- SERVE FRONTEND ---
+// This tells Express to look for your HTML/CSS files in the 'frontend' folder
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // --- DEBUG: Check if Environment Variables loaded ---
 console.log("DEBUG: Cloudinary Configured:", !!process.env.CLOUD_NAME);
@@ -27,7 +32,18 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Connect to DB
 connectDB();
 
-// ... (keep your existing routes here)
+// --- ROUTES ---
+// Serve the homepage
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+// Serve the shop page
+app.get('/shop', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/shop.html'));
+});
+
+// ... (keep your other API routes here)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
