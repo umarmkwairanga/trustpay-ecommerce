@@ -13,13 +13,16 @@ app.use(cors());
 app.use(express.json());
 
 // --- SERVE FRONTEND ---
-// UPDATED: Changed from '..' to '../..' to correctly reach the frontend folder
-const frontendPath = path.resolve(__dirname, '../..', 'frontend');
+// We go up one level from 'backend' to reach the project root, then to 'frontend'
+const frontendPath = path.resolve(__dirname, '..', 'frontend');
 app.use(express.static(frontendPath));
 
-// --- DEBUG: Check if Environment Variables loaded ---
-console.log("DEBUG: Cloudinary Configured:", !!process.env.CLOUD_NAME);
-console.log("DEBUG: MONGO_URI starts with:", process.env.MONGO_URI ? process.env.MONGO_URI.substring(0, 20) : "MISSING");
+// --- DEBUG: Help us see what the server sees ---
+const fs = require('fs');
+app.get('/check-files', (req, res) => {
+    const files = fs.existsSync(frontendPath) ? fs.readdirSync(frontendPath) : "Folder not found";
+    res.send("Files in frontend folder: " + JSON.stringify(files));
+});
 
 // Cloudinary Configuration
 cloudinary.config({
@@ -30,21 +33,16 @@ cloudinary.config({
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Connect to DB
 connectDB();
 
 // --- ROUTES ---
-// Serve the homepage
 app.get('/', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
-// Serve the shop page
 app.get('/shop', (req, res) => {
     res.sendFile(path.join(frontendPath, 'shop.html'));
 });
-
-// ... (keep your other API routes here)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
