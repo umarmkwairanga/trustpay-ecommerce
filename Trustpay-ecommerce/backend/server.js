@@ -1,37 +1,30 @@
 require('dotenv').config({ path: __dirname + '/.env' });
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs'); // Added to list files
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-// 1. Define the frontend path clearly
 const frontendPath = path.resolve(__dirname, '..', 'frontend');
-console.log("DEBUG: frontendPath is:", frontendPath);
 
-// 2. Add a middleware to log EVERY request
-app.use((req, res, next) => {
-    console.log(`DEBUG: Incoming request for: ${req.url}`);
-    next();
-});
-
-// 3. Serve static files
-app.use(express.static(frontendPath));
-
-// 4. Routes - explicitly use the path
 app.get('/', (req, res) => {
+    // List what is in the folder so we can debug
+    let files = [];
+    try {
+        files = fs.readdirSync(frontendPath);
+    } catch (e) {
+        return res.send("DEBUG: Folder not found at " + frontendPath);
+    }
+    
     const p = path.join(frontendPath, 'index.html');
-    console.log("DEBUG: Sending file:", p);
-    res.sendFile(p);
-});
-
-app.get('/shop', (req, res) => {
-    const p = path.join(frontendPath, 'shop.html');
-    console.log("DEBUG: Sending file:", p);
-    res.sendFile(p);
+    if (fs.existsSync(p)) {
+        res.sendFile(p);
+    } else {
+        res.send("DEBUG: index.html not found. Folder contains: " + JSON.stringify(files));
+    }
 });
 
 const PORT = process.env.PORT || 3000;
