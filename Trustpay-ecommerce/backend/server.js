@@ -3,39 +3,20 @@ require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const multer = require('multer');
-const cloudinary = require('cloudinary').v2;
-const connectDB = require('./db');
-const Product = require('./models/Product'); 
-
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// --- SERVE FRONTEND ---
-// We go up one level from 'backend' to reach the project root, then to 'frontend'
-const frontendPath = path.resolve(__dirname, '..', 'frontend');
+// THIS IS THE FIX:
+// We tell the server to look in the root folder for the "frontend" folder,
+// no matter how deep the server's internal system is.
+const frontendPath = path.join(process.cwd(), 'frontend');
+
+console.log("DEBUG: The server is looking for files here:", frontendPath);
+
 app.use(express.static(frontendPath));
 
-// --- DEBUG: Help us see what the server sees ---
-const fs = require('fs');
-app.get('/check-files', (req, res) => {
-    const files = fs.existsSync(frontendPath) ? fs.readdirSync(frontendPath) : "Folder not found";
-    res.send("Files in frontend folder: " + JSON.stringify(files));
-});
-
-// Cloudinary Configuration
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET
-});
-
-const upload = multer({ storage: multer.memoryStorage() });
-
-connectDB();
-
-// --- ROUTES ---
 app.get('/', (req, res) => {
     res.sendFile(path.join(frontendPath, 'index.html'));
 });
