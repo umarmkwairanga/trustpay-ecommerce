@@ -1,22 +1,15 @@
-# Dependencies
-node_modules/
-package-lock.json
-yarn.lock
-
-# Environment variables
-.env
-
-# System files
-.DS_Store
-
-# Build files
-dist/
-
-# Database files
-data/
-db/
-WiredTiger*
-*.wt
-*.log
-*.lock
-bin/
+node_modules/ 
+dist/ 
+build/ 
+*.wt 
+WiredTiger* 
+*.lock 
+*.log 
+storage.bson 
+diagnostic.data/ 
+journal/ 
+bin/ 
+.env 
+.env.local 
+.DS_Store 
+Thumbs.db 

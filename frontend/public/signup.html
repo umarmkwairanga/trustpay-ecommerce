@@ -1,0 +1,26 @@
+<form id="signupForm">
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Password" required>
+  <select id="role">
+    <option value="BUYER">Buyer</option>
+    <option value="SELLER">Seller</option>
+    <option value="RIDER">Delivery Partner</option>
+  </select>
+  <button type="submit">Sign Up</button>
+</form>
+
+<script>
+  document.getElementById('signupForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value,
+        role: document.getElementById('role').value
+      })
+    });
+    alert((await res.json()).message);
+  };
+</script>
