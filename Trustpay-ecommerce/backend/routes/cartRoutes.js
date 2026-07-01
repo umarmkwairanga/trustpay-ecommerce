@@ -1,6 +1,6 @@
-const express = require('express');
-const { addToCart, getCart, removeFromCart } = require('../controllers/cartController');
-const { protect } = require('../middleware/authMiddleware');
+const express = import('express');
+const { addToCart, getCart, removeFromCart } = import('../controllers/cartController');
+const { protect } = import('../middleware/authMiddleware');
 const router = express.Router();
 
 router.route('/')

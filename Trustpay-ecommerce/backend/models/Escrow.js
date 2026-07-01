@@ -1,0 +1,45 @@
+const mongoose = require('mongoose');
+
+const escrowSchema = new mongoose.Schema({
+  orderId: { // Added this to link to the Order model
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Order',
+    required: true
+  },
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true
+  },
+  buyerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  sellerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  amount: {
+    type: Number,
+    required: true
+  },
+  tx_ref: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true
+  },
+  status: {
+    type: String,
+    enum: ['Pending', 'Funded', 'Completed', 'Disputed', 'Refunded'],
+    default: 'Pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+module.exports = mongoose.model('Escrow', escrowSchema);

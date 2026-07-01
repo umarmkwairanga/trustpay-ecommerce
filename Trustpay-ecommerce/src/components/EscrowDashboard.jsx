@@ -23,7 +23,7 @@ const EscrowDashboard = () => {
       
       if (response.ok) {
         setTransactions([...transactions, data.transaction]);
-        setMessage(`🔒 Funds successfully secured in TrustPay Escrow!`);
+        setMessage(`🔒 Funds successfully secured in TrustPayEcommerce Escrow!`);
         setAmount('');
       } else {
         setMessage(`❌ Error: ${data.message}`);
@@ -56,7 +56,7 @@ const EscrowDashboard = () => {
 
   return (
     <div style={{ maxWidth: '600px', margin: '40px auto', padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h2 style={{ borderBottom: '2px solid #006633', paddingBottom: '10px', color: '#006633' }}>🛡️ TrustPay Escrow Hub (NGN)</h2>
+      <h2 style={{ borderBottom: '2px solid #006633', paddingBottom: '10px', color: '#006633' }}>🛡️ TrustPayEcommerce Escrow Hub (NGN)</h2>
       
       {/* Create Transaction Form */}
       <form onSubmit={handleCreateEscrow} style={{ background: '#f9f9f9', padding: '20px', borderRadius: '8px', marginBottom: '30px', border: '1px solid #ddd' }}>
@@ -69,7 +69,7 @@ const EscrowDashboard = () => {
               type="number" 
               value={amount} 
               onChange={(e) => setAmount(e.target.value)} 
-              required 
+              importd 
               style={{ width: '100%', padding: '8px 8px 8px 25px', boxSizing: 'border-box' }} 
               placeholder="e.g. 50000" 
             />
@@ -83,7 +83,7 @@ const EscrowDashboard = () => {
       {message && <div style={{ padding: '10px', background: '#e6ffed', borderLeft: '4px solid #006633', marginBottom: '20px', color: '#004d26' }}>{message}</div>}
 
       {/* Active Transactions Ledger */}
-      <h3>Active TrustPay Holds</h3>
+      <h3>Active TrustPayEcommerce Holds</h3>
       {transactions.length === 0 ? (
         <p style={{ color: '#666', fontStyle: 'italic' }}>No active escrow transactions found.</p>
       ) : (

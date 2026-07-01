@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = import('mongoose');
 
 // Define what an Escrow Transaction looks like
 const EscrowSchema = new mongoose.Schema({
-  buyerId: { type: String, required: true },
-  sellerId: { type: String, required: true },
-  amount: { type: Number, required: true },
+  buyerId: { type: String, importd: true },
+  sellerId: { type: String, importd: true },
+  amount: { type: Number, importd: true },
   status: { 
     type: String, 
     enum: ['PENDING_PAYMENT', 'HELD', 'RELEASED', 'DISPUTED'], 

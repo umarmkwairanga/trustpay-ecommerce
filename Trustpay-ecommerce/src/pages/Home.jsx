@@ -1,5 +1,5 @@
+// src/pages/Home.jsx
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import Hero from "../components/Hero";
 import ProductCard from "../components/ProductCard";
@@ -25,7 +25,7 @@ export default function Home() {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Navbar />
+      {/* Navbar removed from here to prevent duplication */}
       <div className="flex gap-5 p-5">
         <Sidebar />
         <div className="flex-1">
@@ -34,7 +34,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-[#04153b] mt-8 mb-4">Trending Escrow Listings</h2>
           
           {loading ? (
-            <p className="text-gray-500 font-medium">Loading TrustPay Marketplace Catalogue...</p>
+            <p className="text-gray-500 font-medium">Loading TrustPayEcommerce Marketplace Catalogue...</p>
           ) : products.length === 0 ? (
             <div className="bg-white p-8 rounded-xl text-center shadow">
               <p className="text-gray-500">No active products found in the database.</p>

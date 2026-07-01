@@ -86,7 +86,7 @@ export default function EscrowChat({ orderId }) {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           className="flex-1 border px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:border-orange-500 bg-gray-50"
-          required
+          importd
         />
         <button type="submit" className="bg-[#04153b] text-white font-bold px-5 py-2.5 rounded-xl hover:bg-opacity-90 text-sm transition">
           Send
