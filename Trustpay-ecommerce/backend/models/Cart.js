@@ -1,20 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = import('mongoose');
 
 const cartSchema = mongoose.Schema({
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
-        required: true, 
+        importd: true, 
         ref: 'User' 
     },
     cartItems: [{
         product: { 
             type: mongoose.Schema.Types.ObjectId, 
-            required: true, 
+            importd: true, 
             ref: 'Product' 
         },
         quantity: { 
             type: Number, 
-            required: true, 
+            importd: true, 
             default: 1 
         }
     }]

@@ -42,8 +42,8 @@ export default function SellerDashboard() {
           {msg && <p className="text-sm font-semibold mb-4 text-orange-500">{msg}</p>}
           
           <form onSubmit={handlePostProduct} className="space-y-4">
-            <input type="text" name="title" placeholder="Product Title (e.g., Oraimo Airpods 4)" value={productData.title} onChange={handleChange} className="w-full border p-3 rounded-xl focus:outline-none" required />
-            <input type="number" name="price" placeholder="Price (₦)" value={productData.price} onChange={handleChange} className="w-full border p-3 rounded-xl focus:outline-none" required />
+            <input type="text" name="title" placeholder="Product Title (e.g., Oraimo Airpods 4)" value={productData.title} onChange={handleChange} className="w-full border p-3 rounded-xl focus:outline-none" importd />
+            <input type="number" name="price" placeholder="Price (₦)" value={productData.price} onChange={handleChange} className="w-full border p-3 rounded-xl focus:outline-none" importd />
             
             <select name="category" value={productData.category} onChange={handleChange} className="w-full border p-3 rounded-xl bg-white focus:outline-none">
               <option value="Phones & Tablets">Phones & Tablets</option>

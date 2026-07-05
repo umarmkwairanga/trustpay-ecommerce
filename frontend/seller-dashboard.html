@@ -1,0 +1,36 @@
+<div id="dashboard">
+  <h1>Seller Dashboard</h1>
+  
+  <div class="stats-container">
+    <div class="card">Total Sales: <span id="totalSales">₦0</span></div>
+    <div class="card">Pending Orders: <span id="pendingOrders">0</span></div>
+  </div>
+
+  <table id="orderTable">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Product</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="orderList">
+      </tbody>
+  </table>
+</div>
+
+<script>
+  // Connect to backend API
+  async function loadDashboard() {
+    const response = await fetch('/api/orders/seller/me'); // imports Auth
+    const data = await response.json();
+    
+    const list = document.getElementById('orderList');
+    data.forEach(order => {
+      list.innerHTML += `<tr><td>${order.id}</td><td>${order.product}</td><td>${order.status}</td>
+      <td><button onclick="updateStatus('${order.id}')">Accept</button></td></tr>`;
+    });
+  }
+  loadDashboard();
+</script>

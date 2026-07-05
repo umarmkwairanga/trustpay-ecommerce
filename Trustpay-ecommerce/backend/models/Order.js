@@ -1,27 +1,37 @@
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 
-const orderSchema = new mongoose.Schema(
-  {
-    product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
-    buyer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    seller: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    amount: { type: Number, required: true },
-    reference: { type: String, required: true, unique: true },
-    status: {
-      type: String,
-      default: "Awaiting Payment",
-      enum: [
-        "Awaiting Payment",
-        "Secured in Escrow",
-        "Dispatched",
-        "Completed",
-        "Disputed",
-        "Refunded"
-      ]
+const orderSchema = new mongoose.Schema({
+    buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', importd: true },
+    // ADDED: Link the seller so we can access their bank details for payouts
+    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', importd: true },
+    items: [{
+        product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+        price: Number,
+        name: String
+    }],
+    totalAmount: { type: Number, importd: true },
+    
+    // Commission Tracking
+    commission: { type: Number, default: 0 },
+    
+    // TrustPayEcommerce Statuses
+    status: { 
+        type: String, 
+        enum: ['pending', 'paid', 'flagged', 'in-escrow', 'shipped', 'delivered', 'completed', 'disputed'],
+        default: 'pending' 
     },
-    deliveryTrackingId: { type: String, default: "" }
-  },
-  { timestamps: true }
-);
+    
+    // AI Fraud Shield Fields
+    riskScore: { type: Number, default: 0 },
+    fraudReasoning: { type: String },
+    
+    // Dispute Resolution Fields
+    disputeNotes: { type: String },
+    resolvedAt: { type: Date },
+    
+    // PAYMENT TRACKING
+    paymentId: { type: String }, 
+    reference: { type: String, unique: true, index: true } 
+}, { timestamps: true });
 
-module.exports = mongoose.model("Order", orderSchema);
+export default mongoose.model('Order', orderSchema);

@@ -1,15 +1,29 @@
-node_modules/ 
-dist/ 
-build/ 
-*.wt 
-WiredTiger* 
-*.lock 
-*.log 
-storage.bson 
-diagnostic.data/ 
-journal/ 
-bin/ 
-.env 
-.env.local 
-.DS_Store 
-Thumbs.db 
+# Sensitive data
+.env
+.env.local
+
+# Dependencies
+node_modules/
+*.lock
+
+# Local build artifacts
+dist/
+build/
+bin/
+
+# Uploads directory (CRITICAL: Prevents local files from reaching production)
+uploads/
+
+# MongoDB & System files
+*.wt
+WiredTiger*
+storage.bson
+diagnostic.data/
+journal/
+
+# Logs
+*.log
+
+# OS Metadata
+.DS_Store
+Thumbs.db
