@@ -1,0 +1,33 @@
+import axios from 'axios';
+
+const API = axios.create({
+    // Ensures your frontend looks for the API at the correct location
+    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api'
+});
+
+// Automatically inject the token into every request
+// This is your "silent" security guard for every outgoing API call
+API.interceptors.request.use((req) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        req.headers.Authorization = `Bearer ${token}`;
+    }
+    return req;
+}, (error) => {
+    return Promise.reject(error);
+});
+
+// Added an interceptor for handling 401 errors globally
+// If a user's token expires, this will clear their session automatically
+API.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
+export default API;

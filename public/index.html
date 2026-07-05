@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TrustPay Marketplace</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .price { color: #2ecc71; font-weight: bold; }
+        .btn { background: #3498db; color: white; border: none; padding: 10px; cursor: pointer; width: 100%; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h1>TrustPay Market</h1>
+    <div id="productGrid" class="grid">Loading marketplace...</div>
+
+    <script>
+        async function loadProducts() {
+            try {
+                const res = await fetch('http://localhost:5000/api/products');
+                const products = await res.json();
+                const grid = document.getElementById('productGrid');
+                grid.innerHTML = products.map(p => `
+                    <div class="card">
+                        <h3>${p.name}</h3>
+                        <p>${p.description}</p>
+                        <p class="price">₦${p.price}</p>
+                        <button class="btn" onclick="startEscrow('${p._id}')">Buy with Escrow</button>
+                    </div>
+                `).join('');
+            } catch (err) {
+                document.getElementById('productGrid').innerHTML = "Error loading products.";
+            }
+        }
+        loadProducts();
+    </script>
+</body>
+</html>

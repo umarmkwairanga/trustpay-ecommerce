@@ -1,16 +1,11 @@
+// src/services/api.js
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000/api', // Matches your backend port
-});
-
-// Automatically add the JWT token to requests if it exists
-api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
+  baseURL: 'http://localhost:3000', // Updated to match your server port
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 export default api;

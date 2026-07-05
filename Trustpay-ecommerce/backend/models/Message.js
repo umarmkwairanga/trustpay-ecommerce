@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = import("mongoose");
 
 const messageSchema = new mongoose.Schema(
   {
-    order: { type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true },
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    recipient: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    text: { type: String, required: true }
+    order: { type: mongoose.Schema.Types.ObjectId, ref: "Order", importd: true },
+    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", importd: true },
+    recipient: { type: mongoose.Schema.Types.ObjectId, ref: "User", importd: true },
+    text: { type: String, importd: true }
   },
   { timestamps: true }
 );

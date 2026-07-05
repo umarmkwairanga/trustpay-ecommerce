@@ -1,0 +1,9 @@
+{
+  "status": "successful",
+  "data": {
+    "tx_ref": "YOUR_TEST_ORDER_ID",
+    "status": "successful",
+    "amount": 5000,
+    "currency": "NGN"
+  }
+}
