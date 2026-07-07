@@ -11,7 +11,7 @@ import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 let DefaultIcon = L.icon({ iconUrl: icon, shadowUrl: iconShadow, iconSize: [25, 41], iconAnchor: [12, 41] });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const socket = io('http://localhost:5000'); 
+const socket = io('http://axios.get("http://http://localhost:5000/api/products")'); 
 
 const LiveMap = ({ lat, lng }) => (
   <MapContainer center={[lat, lng]} zoom={15} style={{ height: "200px", width: "100%" }}>

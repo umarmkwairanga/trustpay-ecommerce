@@ -8,7 +8,7 @@ const CheckoutButton = ({ amount, email }) => {
         setLoading(true);
         try {
             // Ensure this URL matches your backend port (usually 5000)
-            const response = await axios.post('http://localhost:5000/api/payment/create', {
+            const response = await axios.post('http://axios.get("http://http://localhost:5000/api/products")/api/payment/create', {
                 amount,
                 email
             });

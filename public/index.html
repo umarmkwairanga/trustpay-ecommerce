@@ -18,7 +18,7 @@
     <script>
         async function loadProducts() {
             try {
-                const res = await fetch('http://localhost:5000/api/products');
+                const res = await fetch('http://axios.get("http://http://localhost:5000/api/products")/api/products');
                 const products = await res.json();
                 const grid = document.getElementById('productGrid');
                 grid.innerHTML = products.map(p => `

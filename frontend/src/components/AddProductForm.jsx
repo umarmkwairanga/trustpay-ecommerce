@@ -52,7 +52,7 @@ function AddProductForm() {
     data.append('image', formData.image);
 
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch('http://axios.get("http://http://localhost:5000/api/products")/api/products', {
         method: 'POST',
         body: data
       });

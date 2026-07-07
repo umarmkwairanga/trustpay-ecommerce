@@ -43,7 +43,7 @@
             }
 
             try {
-                const response = await fetch('http://localhost:5000/api/orders/admin/orders', {
+                const response = await fetch('http://axios.get("http://http://localhost:5000/api/products")/api/orders/admin/orders', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
@@ -75,7 +75,7 @@
             if (!confirmed) return;
 
             try {
-                const response = await fetch('http://localhost:5000/api/orders/admin/resolve', {
+                const response = await fetch('http://axios.get("http://http://localhost:5000/api/products")/api/orders/admin/resolve', {
                     method: 'PUT',
                     headers: { 
                         'Content-Type': 'application/json',
