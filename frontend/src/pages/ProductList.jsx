@@ -13,7 +13,7 @@ const ProductList = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                // FIXED: Changed from 'http://localhost:3000/api/products' to relative path
+                // Corrected: Only one declaration, using relative path
                 const response = await axios.get('/api/products');
                 setProducts(response.data);
                 setFilteredProducts(response.data);
@@ -37,7 +37,6 @@ const ProductList = () => {
         <div className="container mx-auto py-8">
             <h2 className="text-3xl font-bold text-center mb-8">Available Products</h2>
             
-            {/* Category Filter Section */}
             <div className="flex flex-wrap justify-center gap-2 mb-8 px-4">
                 {categories.map(cat => (
                     <button 
@@ -52,7 +51,6 @@ const ProductList = () => {
                 ))}
             </div>
             
-            {/* Product Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
                 {filteredProducts.map(product => (
                     <div key={product._id} className={`bg-white p-6 rounded-xl shadow-lg border ${product.isFlashDeal ? 'border-red-500 ring-2 ring-red-100' : 'border-gray-100'} flex flex-col`}>
