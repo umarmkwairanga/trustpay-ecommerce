@@ -7,12 +7,10 @@ import fs from 'fs';
 import mongoose from 'mongoose';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
-import http from 'http';
-import { Server } from 'socket.io';
 
 // Import Models
-import Product from '../models/Escrow.js'Product.js'; 
-import Transaction from '../models/Escrow.js'Transaction.js';
+import Product from '../models/Product.js'; 
+import Transaction from '../models/Escrow.js';
 
 // Import Routes
 import orderRoutes from './routes/orderRoutes.js';
@@ -27,10 +25,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, { 
-    cors: { origin: process.env.CLIENT_URL || "http://localhost:5173", methods: ["GET", "POST"] }
-});
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI)
@@ -57,14 +51,6 @@ app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173", creden
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- SOCKET.IO REAL-TIME LOGIC ---
-io.on('connection', (socket) => {
-    console.log("Client connected");
-    socket.on('update-rider-location', (data) => {
-        io.emit(`location-update-${data.orderId}`, { lat: data.lat, lng: data.lng });
-    });
-});
-
 // --- FLUTTERWAVE WEBHOOK ---
 app.post('/api/flutterwave/webhook', async (req, res) => {
     try {
@@ -86,7 +72,6 @@ app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/ceo', protect, authorizeCEO, ceoRoutes);
-// Translation route is now secured to only allow the CEO
 app.use('/api/translation', protect, authorizeCEO, translationRoutes);
 
 app.get('/api/products', async (req, res) => {
@@ -109,5 +94,5 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`TrustPay Server running on port ${PORT}`));
+// Export the app for Vercel
+export default app;
