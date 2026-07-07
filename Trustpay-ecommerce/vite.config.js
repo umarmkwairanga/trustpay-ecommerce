@@ -1,11 +1,14 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite'; // 1. Import the plugin
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tailwindcss(), // 2. Add it to the plugins array
+  ],
   server: {
-    host: '0.0.0.0', // Forces Vite to listen on both localhost AND 127.0.0.1 simultaneously!
+    host: '0.0.0.0',
     port: 5173
   }
-})
+});

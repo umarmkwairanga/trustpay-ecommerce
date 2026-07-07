@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-    // Ensures your frontend looks for the API at the correct location
-    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api'
+    // VITE uses import.meta.env instead of process.env
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 });
 
 // Automatically inject the token into every request

@@ -1,5 +1,5 @@
 ### 1. Test Escrow Creation
-POST http://localhost:5000/api/escrow/create
+POST http://localhost:3000/api/escrow/create
 Content-Type: application/json
 
 {
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### 2. Test Flutterwave Webhook (Simulated)
-POST http://localhost:5000/api/flutterwave/webhook
+POST http://localhost:3000/api/flutterwave/webhook
 verif-hash: your_secret_hash_here
 Content-Type: application/json
 

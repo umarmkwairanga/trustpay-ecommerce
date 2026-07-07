@@ -2,7 +2,7 @@ import React from 'react';
 import { usePaystackPayment } from 'react-paystack';
 import axios from 'axios';
 
-const PaystackButton = ({ amount, email, items, sellerId, onSuccess }) => {
+const FlutterwaveButton = ({ amount, email, items, sellerId, onSuccess }) => {
     // 1. Generate unique reference from backend
     const config = {
         reference: (new Date()).getTime().toString(),
@@ -29,4 +29,4 @@ const PaystackButton = ({ amount, email, items, sellerId, onSuccess }) => {
     );
 };
 
-export default PaystackButton;
+export default FlutterwaveButton;

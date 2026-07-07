@@ -15,10 +15,10 @@ import fs from 'fs';
 import mongoose from 'mongoose';
 import { rateLimit } from 'express-rate-limit'; 
 
-import Product from './models/Product.js'; 
-import Order from './models/Order.js'; 
-import Task from './models/Task.js'; 
-import User from './models/User.js'; 
+import Product from '../models/Escrow.js'Product.js'; 
+import Order from '../models/Escrow.js'Order.js'; 
+import Task from '../models/Escrow.js'Task.js'; 
+import User from '../models/Escrow.js'User.js'; 
 
 import authRoutes from './routes/authRoutes.js';
 import { protect, restrictTo } from './middleware/authMiddleware.js'; 

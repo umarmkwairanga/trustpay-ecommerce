@@ -11,12 +11,17 @@ import http from 'http';
 import { Server } from 'socket.io';
 
 // Import Models
-import Product from './models/Product.js'; 
-import Transaction from './models/Transaction.js';
+import Product from '../models/Escrow.js'Product.js'; 
+import Transaction from '../models/Escrow.js'Transaction.js';
 
 // Import Routes
 import orderRoutes from './routes/orderRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import ceoRoutes from './routes/ceoRoutes.js';
+import translationRoutes from './routes/translationRoutes.js';
+
+// Import Middleware
+import { protect, authorizeCEO } from './middleware/auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,7 +37,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB successfully"))
   .catch((err) => console.error("MongoDB connection error:", err.message));
 
-// Middleware
+// Middleware Setup
 const uploadDir = 'uploads';
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
@@ -51,7 +56,6 @@ const apiLimiter = rateLimit({
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/api', apiLimiter);
 
 // --- SOCKET.IO REAL-TIME LOGIC ---
 io.on('connection', (socket) => {
@@ -61,28 +65,29 @@ io.on('connection', (socket) => {
     });
 });
 
-// --- PAYSTACK WEBHOOK (TrustPay Escrow Logic) ---
-app.post('/api/paystack/webhook', async (req, res) => {
-    const event = req.body;
-    if (event.event === 'charge.success') {
-        const { reference } = event.data;
-        try {
-            const txn = await Transaction.findOneAndUpdate(
-                { reference }, 
-                { status: 'HELD' },
-                { new: true }
-            );
-            if (txn) console.log(`Funds HELD for reference: ${reference}`);
-        } catch (error) {
-            console.error("Webhook Error:", error);
+// --- FLUTTERWAVE WEBHOOK ---
+app.post('/api/flutterwave/webhook', async (req, res) => {
+    try {
+        const signature = req.headers['verif-hash'];
+        if (!signature || signature !== process.env.FLW_SECRET_HASH) return res.status(401).send('Unauthorized');
+        
+        const payload = req.body;
+        if (payload.event === 'charge.completed' && payload.data.status === 'successful') {
+            await Transaction.findOneAndUpdate({ reference: payload.data.tx_ref }, { status: 'HELD' });
         }
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
     }
-    res.sendStatus(200);
 });
 
 // --- API ROUTES ---
+app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/ceo', protect, authorizeCEO, ceoRoutes);
+// Translation route is now secured to only allow the CEO
+app.use('/api/translation', protect, authorizeCEO, translationRoutes);
 
 app.get('/api/products', async (req, res) => {
     try {
@@ -96,8 +101,7 @@ app.get('/api/products', async (req, res) => {
 app.post('/api/products', upload.single('image'), async (req, res) => {
     try {
         const { name, price, category, stock, description } = req.body;
-        const imagePath = req.file ? req.file.path : null;
-        const newProduct = new Product({ name, price, category, stock, description, imagePath });
+        const newProduct = new Product({ name, price, category, stock, description, imagePath: req.file?.path });
         const savedProduct = await newProduct.save();
         res.status(201).json({ message: 'Product added!', product: savedProduct });
     } catch (error) {

@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext'; 
-// Import your new LanguageProvider
 import { LanguageProvider } from './context/LanguageContext';
 
 // Components & Pages
@@ -25,6 +24,9 @@ import StaffDashboard from './pages/StaffDashboard';
 import About from './pages/About';
 import FAQ from './pages/FAQ';
 
+// NEW: AI Translation Dashboard Import
+import TranslationDashboard from './pages/TranslationDashboard'; 
+
 // Admin Dashboards
 import AdminDashboard from './pages/AdminDashboard'; 
 import CEODashboard from './pages/CEODashboard';   
@@ -39,14 +41,12 @@ import EscrowPolicy from './pages/legal/EscrowPolicy';
 import BuyerProtection from './pages/legal/BuyerProtection';
 import SellerProtection from './pages/legal/SellerProtection';
 
-// 1. Protection for any logged-in user
 const ProtectedRoute = ({ children }) => {
     const { isLoggedIn, loading } = useAuth();
     if (loading) return <div>Loading...</div>;
     return isLoggedIn ? children : <Navigate to="/login" />;
 };
 
-// 2. Protection based on specific user roles
 const RoleRoute = ({ children, allowedRoles }) => {
     const { isLoggedIn, user, loading } = useAuth();
     if (loading) return <div>Loading...</div>;
@@ -55,7 +55,7 @@ const RoleRoute = ({ children, allowedRoles }) => {
 
 function App() {
     return (
-        <LanguageProvider> {/* Global Language Context Wrapper */}
+        <LanguageProvider> 
             <Router>
                 <Navbar />
                 <ErrorBoundary>
@@ -67,6 +67,9 @@ function App() {
                         <Route path="/login" element={<LoginForm />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/cart" element={<CartView />} />
+                        
+                        {/* AI Translation Dashboard - Split Screen */}
+                        <Route path="/translate" element={<TranslationDashboard />} />
 
                         {/* Legal Policy Routes */}
                         <Route path="/legal/privacy" element={<PrivacyPolicy />} />

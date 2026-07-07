@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PaystackButton } from 'react-paystack';
+import { FlutterwaveButton } from 'react-paystack';
 import api from '../services/api';
 
 const CheckoutPage = ({ totalAmount, email, items }) => {
@@ -34,7 +34,7 @@ const CheckoutPage = ({ totalAmount, email, items }) => {
             <p className="mb-4">Total Amount: <strong>₦{totalAmount.toLocaleString()}</strong></p>
             
             {/* Using btn-primary for Orange CTA branding */}
-            <PaystackButton 
+            <FlutterwaveButton 
                 {...componentProps} 
                 className="btn-primary w-full" 
             />

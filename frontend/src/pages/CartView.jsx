@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
-import PaystackButton from '../components/PaystackButton'; // Import the component we discussed
+import FlutterwaveButton from '../components/FlutterwaveButton'; // Import the component we discussed
 
 const CartView = () => {
   const { cart, removeFromCart, clearCart } = useCart();
@@ -11,7 +11,7 @@ const CartView = () => {
   const user = JSON.parse(localStorage.getItem('user') || '{}'); 
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-  // This function is triggered by PaystackButton after payment success
+  // This function is triggered by FlutterwaveButton after payment success
   const handlePaymentSuccess = () => {
     alert("Payment Successful! Funds are now securely held in TrustPay escrow.");
     clearCart();
@@ -43,8 +43,8 @@ const CartView = () => {
             Total: ${total.toFixed(2)}
           </div>
 
-          {/* Integration of PaystackButton */}
-          <PaystackButton 
+          {/* Integration of FlutterwaveButton */}
+          <FlutterwaveButton 
             amount={total} 
             email={user.email || "buyer@example.com"} 
             items={cart}

@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import User from './models/User.js'; // Ensure this path matches your folder structure
+import User from '../models/Escrow.js'User.js'; // Ensure this path matches your folder structure
 
 // Replace with your MongoDB connection string if different
 const MONGO_URI = 'mongodb://localhost:27017/trustpay';

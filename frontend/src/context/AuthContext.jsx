@@ -1,7 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'; // Install this package
+import { jwtDecode } from 'jwt-decode';
 
-const AuthContext = createContext();
+// Exported AuthContext so it can be imported as a named export
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -29,4 +30,5 @@ export const AuthProvider = ({ children }) => {
     );
 };
 
+// Custom hook to use the context
 export const useAuth = () => useContext(AuthContext);

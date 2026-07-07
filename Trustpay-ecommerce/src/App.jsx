@@ -1,17 +1,18 @@
 // src/App.jsx
 import { BrowserRouter } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="min-h-screen bg-gray-50">
         <Navbar />
-        <AppRoutes />
-      </BrowserRouter>
-    </AuthProvider>
+        <main className="container mx-auto p-4">
+          <AppRoutes />
+        </main>
+      </div>
+    </BrowserRouter>
   );
 }
 
