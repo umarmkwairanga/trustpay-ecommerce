@@ -13,7 +13,8 @@ const ProductList = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/api/products');
+                // FIXED: Changed from 'http://localhost:3000/api/products' to relative path
+                const response = await axios.get('/api/products');
                 setProducts(response.data);
                 setFilteredProducts(response.data);
             } catch (error) {
