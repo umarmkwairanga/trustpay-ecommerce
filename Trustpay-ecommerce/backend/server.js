@@ -17,6 +17,10 @@ import Transaction from './models/Transaction.js';
 // Import Routes
 import orderRoutes from './routes/orderRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import ceoRoutes from './routes/ceoRoutes.js'; // NEW
+
+// Import Middleware
+import { protect, authorizeCEO } from './middleware/auth.js'; // NEW
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,7 +36,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log("Connected to MongoDB successfully"))
   .catch((err) => console.error("MongoDB connection error:", err.message));
 
-// Middleware
+// Middleware Setup
 const uploadDir = 'uploads';
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
 
@@ -51,58 +55,46 @@ const apiLimiter = rateLimit({
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173", credentials: true }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/api', apiLimiter);
 
-// --- SOCKET.IO REAL-TIME LOGIC ---
+// --- SOCKET.IO ---
 io.on('connection', (socket) => {
-    console.log("Client connected");
     socket.on('update-rider-location', (data) => {
         io.emit(`location-update-${data.orderId}`, { lat: data.lat, lng: data.lng });
     });
 });
 
-// --- PAYSTACK WEBHOOK (TrustPay Escrow Logic) ---
-app.post('/api/paystack/webhook', async (req, res) => {
-    const event = req.body;
-    if (event.event === 'charge.success') {
-        const { reference } = event.data;
-        try {
-            const txn = await Transaction.findOneAndUpdate(
-                { reference }, 
-                { status: 'HELD' },
-                { new: true }
-            );
-            if (txn) console.log(`Funds HELD for reference: ${reference}`);
-        } catch (error) {
-            console.error("Webhook Error:", error);
+// --- FLUTTERWAVE WEBHOOK ---
+app.post('/api/flutterwave/webhook', async (req, res) => {
+    try {
+        const signature = req.headers['verif-hash'];
+        if (!signature || signature !== process.env.FLW_SECRET_HASH) return res.status(401).send('Unauthorized');
+        
+        const payload = req.body;
+        if (payload.event === 'charge.completed' && payload.data.status === 'successful') {
+            await Transaction.findOneAndUpdate({ reference: payload.data.tx_ref }, { status: 'HELD' });
         }
+        res.sendStatus(200);
+    } catch (error) {
+        res.sendStatus(500);
     }
-    res.sendStatus(200);
 });
 
 // --- API ROUTES ---
+app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/ceo', protect, authorizeCEO, ceoRoutes); // PROTECTED CEO ROUTE
 
 app.get('/api/products', async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.json(products);
-    } catch (err) {
-        res.status(500).json({ message: "Error fetching products", error: err.message });
-    }
+    const products = await Product.find();
+    res.json(products);
 });
 
 app.post('/api/products', upload.single('image'), async (req, res) => {
-    try {
-        const { name, price, category, stock, description } = req.body;
-        const imagePath = req.file ? req.file.path : null;
-        const newProduct = new Product({ name, price, category, stock, description, imagePath });
-        const savedProduct = await newProduct.save();
-        res.status(201).json({ message: 'Product added!', product: savedProduct });
-    } catch (error) {
-        res.status(400).json({ message: "Error adding product", error: error.message });
-    }
+    const { name, price, category, stock, description } = req.body;
+    const newProduct = new Product({ name, price, category, stock, description, imagePath: req.file?.path });
+    const savedProduct = await newProduct.save();
+    res.status(201).json({ message: 'Product added!', product: savedProduct });
 });
 
 const PORT = process.env.PORT || 5000;
