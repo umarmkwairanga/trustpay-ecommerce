@@ -1,0 +1,4 @@
+### Test CEO Stats
+GET http://localhost:5000/api/ceo/dashboard-stats
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
