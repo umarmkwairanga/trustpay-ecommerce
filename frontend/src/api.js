@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({
     // VITE uses import.meta.env instead of process.env
-    baseURL: import.meta.env.VITE_API_URL || 'http://axios.get("http://http://localhost:5000/api/products")/api'
+    baseURL: import.meta.env.VITE_API_URL || 'http://axios.get("http:///api/api/products")/api'
 });
 
 // Automatically inject the token into every request

@@ -10,7 +10,7 @@ const EditProduct = () => {
     // 1. Fetch current product details
     useEffect(() => {
         const fetchProduct = async () => {
-            const { data } = await axios.get(`http://axios.get("http://http://localhost:5000/api/products")/api/products/${id}`);
+            const { data } = await axios.get(`http://axios.get("http:///api/api/products")/api/products/${id}`);
             setProduct(data);
         };
         fetchProduct();
@@ -19,7 +19,7 @@ const EditProduct = () => {
     // 2. Handle the Save
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await axios.put(`http://axios.get("http://http://localhost:5000/api/products")/api/products/${id}`, product);
+        await axios.put(`http://axios.get("http:///api/api/products")/api/products/${id}`, product);
         alert("Product updated successfully!");
         navigate('/admin/products');
     };

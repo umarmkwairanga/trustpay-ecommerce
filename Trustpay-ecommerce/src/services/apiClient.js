@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://axios.get("http://http://localhost:5000/api/products")/api', // Your backend URL
+    baseURL: 'http://axios.get("http:///api/api/products")/api', // Your backend URL
     headers: {
         'Content-Type': 'application/json',
     },

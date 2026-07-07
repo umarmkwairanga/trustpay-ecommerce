@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import io from 'socket.io-client';
 
-const socket = io('http://axios.get("http://http://localhost:5000/api/products")'); // Connect to backend
+const socket = io('http://axios.get("http:///api/api/products")'); // Connect to backend
 
 const RiderTracking = ({ deliveryId }) => {
   const [status, setStatus] = useState('Assigned');
@@ -21,7 +21,7 @@ const RiderTracking = ({ deliveryId }) => {
   // 2. Update status (e.g., Rider clicks "Delivered")
   const updateStatus = async (newStatus) => {
     try {
-      await axios.patch(`http://axios.get("http://http://localhost:5000/api/products")/api/delivery/update/${deliveryId}`, 
+      await axios.patch(`http://axios.get("http:///api/api/products")/api/delivery/update/${deliveryId}`, 
         { status: newStatus },
         { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
       );

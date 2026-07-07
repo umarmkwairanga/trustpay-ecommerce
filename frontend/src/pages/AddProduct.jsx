@@ -10,7 +10,7 @@ const AddProduct = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://axios.get("http://http://localhost:5000/api/products")/api/products', { name, price });
+            await axios.post('http://axios.get("http:///api/api/products")/api/products', { name, price });
             alert("Product added!");
             navigate('/admin/products');
         } catch (err) {
