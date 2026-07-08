@@ -1,7 +1,9 @@
 import Order from '../models/Order.js';
 import AuditLog from '../models/AuditLog.js';
-import flw from '../services/flutterwave.js';
-import { sendOrderNotification } from '../services/notificationService.js';
+// FIXED: Changed path to step up 3 levels to the repository root
+import flw from '../../../services/flutterwave.js'; 
+// NOTE: If notificationService also lives at the root alongside flutterwave, use '../../../' here too:
+import { sendOrderNotification } from '../../../services/notificationService.js';
 import { addLoyaltyPoints } from './loyaltyController.js';
 
 // 1. Create a new order
