@@ -8,9 +8,9 @@ import mongoose from 'mongoose';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
 
-// Import Models
-import Product from '../models/Product.js'; 
-import Transaction from '../models/Escrow.js';
+// Import Models - UPDATED to lowercase to prevent Linux deployment crashes
+import Product from '../models/product.js'; 
+import Transaction from '../models/escrow.js';
 
 // Import Routes
 import orderRoutes from './routes/orderRoutes.js';
@@ -47,7 +47,18 @@ const apiLimiter = rateLimit({
     message: "Too many requests, please try again later."
 });
 
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173", credentials: true }));
+// UPDATED CORS: Now explicitly allows your live Vercel domain alongside localhost
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    'https://trustpay-ecommerce.vercel.app',
+    'http://localhost:5173'
+].filter(Boolean);
+
+app.use(cors({ 
+    origin: allowedOrigins, 
+    credentials: true 
+}));
+
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
