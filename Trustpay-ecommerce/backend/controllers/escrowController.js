@@ -1,9 +1,19 @@
-const Escrow = require('../models/Escrow');
-const Product = require('../models/Product');
-const { generateTxRef } = require('../utils/referenceGenerator');
+import Escrow from '../models/Escrow.js';
+import Product from '../models/Product.js';
+import User from '../models/User.js'; // Imported to look up buyer/seller numbers
+import { generateTxRef } from '../utils/referenceGenerator.js';
+import { sendSMS } from '../services/twilioService.js'; // Imported your Twilio service
+
+// Helper to format local numbers (e.g., 0903... -> +234903...)
+const formatPhoneNumber = (phone) => {
+    if (phone && phone.startsWith('0')) {
+        return '+234' + phone.substring(1);
+    }
+    return phone;
+};
 
 // Create a new Escrow transaction
-exports.createEscrow = async (req, res) => {
+export const createEscrow = async (req, res) => {
     try {
         const { orderId, productId, buyerId, sellerId, amount } = req.body;
         
@@ -11,7 +21,7 @@ exports.createEscrow = async (req, res) => {
         const tx_ref = generateTxRef('TRUSTPAY');
 
         const newEscrow = await Escrow.create({ 
-            orderId, // Added orderId link
+            orderId, 
             productId, 
             buyerId, 
             sellerId, 
@@ -22,6 +32,16 @@ exports.createEscrow = async (req, res) => {
 
         await Product.findByIdAndUpdate(productId, { status: 'escrowed' });
         
+        // 💬 SMS Notification: Alert the Buyer that escrow is waiting for payment
+        const buyer = await User.findById(buyerId);
+        if (buyer && buyer.phoneNumber) {
+            const formattedPhone = formatPhoneNumber(buyer.phoneNumber);
+            await sendSMS(
+                formattedPhone, 
+                `Trustpay: Your escrow order for ₦${amount} has been initialized. Please complete your payment. Reference: ${tx_ref}`
+            );
+        }
+
         res.status(201).json({ 
             message: "Escrow initialized", 
             tx_ref, 
@@ -33,11 +53,11 @@ exports.createEscrow = async (req, res) => {
 };
 
 // Get escrow details
-exports.getEscrowStatus = async (req, res) => {
+export const getEscrowStatus = async (req, res) => {
     try {
         const escrow = await Escrow.findById(req.params.id)
             .populate('productId')
-            .populate('orderId'); // Populated for better frontend visibility
+            .populate('orderId'); 
         
         if (!escrow) return res.status(404).json({ message: 'Escrow transaction not found' });
         res.status(200).json(escrow);
@@ -47,7 +67,7 @@ exports.getEscrowStatus = async (req, res) => {
 };
 
 // Get all escrows (Admin Only)
-exports.getAllEscrows = async (req, res) => {
+export const getAllEscrows = async (req, res) => {
     try {
         const escrows = await Escrow.find()
             .populate('productId')
@@ -59,7 +79,7 @@ exports.getAllEscrows = async (req, res) => {
 };
 
 // Release funds (Admin/System Only)
-exports.releaseFunds = async (req, res) => {
+export const releaseFunds = async (req, res) => {
     try {
         const { escrowId } = req.params;
 
@@ -75,6 +95,16 @@ exports.releaseFunds = async (req, res) => {
 
         // Update the associated product status
         await Product.findByIdAndUpdate(escrow.productId, { status: 'sold' });
+
+        // 💬 SMS Notification: Alert the Seller that their money has been released!
+        const seller = await User.findById(escrow.sellerId);
+        if (seller && seller.phoneNumber) {
+            const formattedPhone = formatPhoneNumber(seller.phoneNumber);
+            await sendSMS(
+                formattedPhone, 
+                `Trustpay Escrow Alert: Your escrow funds of ₦${escrow.amount} have been successfully released to your wallet! 🚀`
+            );
+        }
 
         res.status(200).json({ 
             message: 'Funds released successfully!', 
