@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Admin Portal</h1>
+  <div id="admin-content" style="display:none;">
+    <h3>Assign Delivery</h3>
+    <input type="text" id="orderId" placeholder="Order ID">
+    <input type="text" id="riderId" placeholder="Rider User ID">
+    <button onclick="assign()">Assign Job</button>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    
+    // 1. Admin Authorization Guard
+    if (!user || user.role !== 'ADMIN') {
+      alert("Unauthorized: Admins only.");
+      window.location.href = '/login.html';
+    } else {
+      document.getElementById('admin-content').style.display = 'block';
+    }
+
+    // 2. Secured Assignment logic
+    async function assign() {
+      const orderId = document.getElementById('orderId').value;
+      const riderId = document.getElementById('riderId').value;
+
+      // Included x-user-id header to pass the server-side authorize middleware
+      const res = await fetch('/api/delivery/assign', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-user-id': user.userId 
+        },
+        body: JSON.stringify({ orderId, riderId })
+      });
+      
+      const data = await res.json();
+      alert(data.message);
+    }
+  </script>
+</body>
+</html>

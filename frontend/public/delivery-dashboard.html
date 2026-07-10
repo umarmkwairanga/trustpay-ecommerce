@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Rider Dashboard</h1>
+  <div id="job-list">Loading your jobs...</div>
+
+  <script>
+    // 1. ROUTE GUARD (The Bouncer)
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || user.role !== 'RIDER') {
+      alert("Access Denied: You are not authorized.");
+      window.location.href = '/login.html';
+    } else {
+      loadRiderJobs(user.userId);
+    }
+
+    // 2. THE FUNCTION (The VIP Loader)
+    async function loadRiderJobs(riderId) {
+      try {
+        // Added 'x-user-id' header here to pass security check
+        const response = await fetch(`/api/delivery/my-jobs/${riderId}`, {
+          headers: { 'x-user-id': user.userId }
+        });
+        const jobs = await response.json();
+        const container = document.getElementById('job-list');
+        
+        if (jobs.length === 0) {
+          container.innerHTML = "<p>No active jobs assigned yet.</p>";
+          return;
+        }
+
+        container.innerHTML = jobs.map(job => `
+          <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+            <p><strong>Order ID:</strong> ${job.orderId}</p>
+            <p><strong>Status:</strong> ${job.status}</p>
+            <input id="otp-${job.orderId}" placeholder="Enter OTP from Buyer">
+            <button onclick="confirm('${job.orderId}')">Confirm Delivery</button>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error("Error loading jobs:", err);
+      }
+    }
+
+    // 3. THE CONFIRM FUNCTION
+    async function confirm(orderId) {
+      const otp = document.getElementById(`otp-${orderId}`).value;
+      
+      // Added 'x-user-id' header here to pass security check
+      const res = await fetch('/api/delivery/confirm-delivery', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'x-user-id': user.userId 
+        },
+        body: JSON.stringify({ orderId, otp })
+      });
+      
+      const data = await res.json();
+      alert(data.message);
+      location.reload(); 
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+/* --- TrustPay ECOMMERCE OFFICIAL BRAND SYSTEM --- */
+:root {
+  --navy: #001F5B;       /* Primary Trust Blue */
+  --orange: #FF6B00;     /* Secondary Trust Orange */
+  --white: #FFFFFF;      /* Transparency White */
+  --light-bg: #F5F7FA;   /* Alternate Section Background */
+  --text-main: #1A1A1A;  /* Primary Text */
+  --border-color: #E5E7EB;
+}
+
+/* Global Reset & Base Typography */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text-main);
+}
+
+/* Sidebar & Header Uniformity */
+header, .navbar, .admin-sidebar {
+  background-color: var(--navy);
+  color: var(--white);
+  padding: 1rem;
+}
+
+header a, .navbar a, .admin-sidebar a {
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* Primary Buttons (The Orange Action) */
+.btn-primary {
+  background-color: var(--orange);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-primary:hover {
+  background-color: #d65a00;
+}
+
+/* Secondary Buttons (The Navy Action) */
+.btn-secondary {
+  background-color: var(--navy);
+  color: var(--white);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.btn-secondary:hover {
+  opacity: 0.9;
+}
+
+/* Dashboard Active State */
+.menu-item.active {
+  background-color: var(--orange);
+  color: var(--white);
+  padding: 10px;
+  display: block;
+  border-radius: 4px;
+}
+
+/* Content Container Uniformity */
+.card {
+  background-color: var(--white);
+  border: 1px solid var(--border-color);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 10px 0; /* Updated for better alignment */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Added subtle shadow */
+}
+
+h1, h2, h3 {
+  color: var(--navy);
+}
+
+/* Utility for File Inputs in Cards */
+.file-upload {
+  margin-top: 10px;
+  font-size: 0.875rem;
+  color: #6b7280;
+}

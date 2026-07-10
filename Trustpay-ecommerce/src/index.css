@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* This tells Tailwind to look at your files */
+@source "../src/**/*.{js,ts,jsx,tsx}";
+
+/* Base styles */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  /* Accessibility: Default line height */
+  line-height: var(--line-height-main);
+  transition: line-height 0.3s ease;
+}
+
+/* Accessibility Variables */
+:root {
+  --line-height-main: 1.8; 
+}
+
+/* Class added by your ViewSettings component */
+.compact-mode {
+  --line-height-main: 1.4;
+}
+
+/* Utility to ensure text respects our variable */
+p, h1, h2, h3, h4, h5, h6, li {
+  line-height: inherit;
+}

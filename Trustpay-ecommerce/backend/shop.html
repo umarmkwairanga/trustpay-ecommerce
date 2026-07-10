@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f9f9f9; margin: 0; }
+        h1 { text-align: center; padding: 20px; }
+        .filter-section { display: flex; justify-content: center; gap: 10px; padding: 20px; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 10px #eee; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        img { max-width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; width: 100%; }
+        .cart-link { display: block; text-align: center; margin: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Our Store</h1>
+    <a href="cart.html" class="cart-link">🛒 View Your Cart</a>
+    
+    <div class="filter-section">
+        <input type="text" id="search" onkeyup="loadShop()" placeholder="Search products...">
+        <select id="filter" onchange="loadShop()">
+            <option value="All">All Categories</option>
+            <option value="Furnitures">Furnitures</option>
+            <option value="Cars">Cars</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Others">Others</option>
+        </select>
+    </div>
+
+    <div id="shop-container" class="grid"></div>
+
+    <script>
+        const loadShop = async () => {
+            const res = await fetch('http://localhost:3000/api/products');
+            const data = await res.json();
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const filter = document.getElementById('filter').value;
+
+            const filteredData = data.filter(p => {
+                const matchCat = (filter === 'All' || p.category === filter);
+                const matchSearch = p.name.toLowerCase().includes(searchTerm);
+                return matchCat && matchSearch;
+            });
+
+            if (filteredData.length === 0) {
+                document.getElementById('shop-container').innerHTML = "<p style='text-align:center;'>No products found.</p>";
+            } else {
+                document.getElementById('shop-container').innerHTML = filteredData.map(p => `
+                    <div class="card">
+                        ${p.image ? `<img src="http://localhost:3000${p.image}">` : ''}
+                        <h3>${p.name}</h3>
+                        <p><strong>$${p.price}</strong></p>
+                        <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
+                    </div>
+                `).join('');
+            }
+        };
+
+        function addToCart(name, price) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name, price });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(name + " added to cart!");
+        }
+        
+        loadShop();
+    </script>
+</body>
+</html>

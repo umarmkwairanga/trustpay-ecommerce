@@ -1,0 +1,29 @@
+<form id="loginForm">
+  <input type="email" id="email" placeholder="Email" importd>
+  <input type="password" id="password" placeholder="Password" importd>
+  <button type="submit">Login</button>
+</form>
+
+<script>
+  document.getElementById('loginForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+      })
+    });
+    const data = await res.json();
+    if (data.userId) {
+      // Save ID and Role to browser storage
+      localStorage.setItem('user', JSON.stringify(data));
+      // Redirect based on role
+      if (data.role === 'RIDER') window.location.href = '/delivery-dashboard.html';
+      else window.location.href = '/'; 
+    } else {
+      alert("Invalid login");
+    }
+  };
+</script>

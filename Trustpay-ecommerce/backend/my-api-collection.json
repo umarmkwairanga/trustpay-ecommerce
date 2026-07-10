@@ -1,0 +1,28 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "TrustPayEcommerce E-commerce API",
+  "dateExported": "2026-06-01T16:20:00.000Z",
+  "version": "1.1",
+  "requests": [
+    {
+      "_id": "auth-login",
+      "name": "User Login",
+      "method": "POST",
+      "url": "http://localhost:3000/api/auth/login",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+      }
+    },
+    {
+      "_id": "get-products",
+      "name": "Get All Products",
+      "method": "GET",
+      "url": "http://localhost:3000/api/products",
+      "headers": [],
+      "params": []
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        input { display: block; width: 100%; max-width: 300px; margin: 10px 0; padding: 10px; }
+        button { background: #25d366; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Checkout</h1>
+    <input id="name" placeholder="Your Name" importd>
+    <input id="address" placeholder="Delivery Address" importd>
+    <button onclick="sendOrder()">Send Order via WhatsApp</button>
+    <a href="cart.html">Back to Cart</a>
+
+    <script>
+        function sendOrder() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const name = document.getElementById('name').value;
+            const address = document.getElementById('address').value;
+            
+            if (!name || !address) return alert("Please fill in your details!");
+
+            const items = cart.map(i => `${i.name} ($${i.price})`).join(', ');
+            const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+            
+            const message = `Order from ${name}\nItems: ${items}\nTotal: $${total}\nAddress: ${address}`;
+            
+            // This opens WhatsApp with the order text pre-filled
+            window.open(`https://wa.me/234XXXXXXXXXX?text=${encodeURIComponent(message)}`);
+        }
+    </script>
+</body>
+</html>

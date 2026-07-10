@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        li { padding: 10px; border-bottom: 1px solid #ddd; max-width: 400px; }
+        .total { font-weight: bold; font-size: 1.2em; margin-top: 20px; }
+        button { background: #ff4444; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <ul id="cart-items"></ul>
+    <div id="total-price" class="total"></div>
+    <br>
+    <button onclick="localStorage.clear(); location.reload();">Empty Cart</button>
+    <a href="shop.html">Back to Shopping</a>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const list = document.getElementById('cart-items');
+        
+        // Show items
+        list.innerHTML = cart.map(i => `<li>${i.name} - $${i.price}</li>`).join('');
+        
+        // Calculate and show total
+        const total = cart.reduce((sum, item) => sum + parseFloat(item.price), 0);
+        document.getElementById('total-price').innerHTML = `Total: $${total.toFixed(2)}`;
+    </script>
+</body>
+</html>

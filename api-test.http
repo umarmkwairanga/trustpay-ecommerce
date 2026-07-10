@@ -1,0 +1,26 @@
+### 1. Test Escrow Creation
+POST http://localhost:3000/api/escrow/create
+Content-Type: application/json
+
+{
+    "orderId": "60d5ec49f1b2c82068832123",
+    "productId": "60d5ec49f1b2c82068832456",
+    "buyerId": "60d5ec49f1b2c82068832789",
+    "sellerId": "60d5ec49f1b2c82068832000",
+    "amount": 5000,
+    "tx_ref": "TXN_789_NEW"
+}
+
+### 2. Test Flutterwave Webhook (Simulated)
+POST http://localhost:3000/api/flutterwave/webhook
+verif-hash: your_secret_hash_here
+Content-Type: application/json
+
+{
+    "event": "charge.completed",
+    "data": {
+        "tx_ref": "TXN_789_NEW",
+        "status": "successful",
+        "amount": 5000
+    }
+}

@@ -1,0 +1,35 @@
+// utils/riskEngine.js
+
+
+/**
+
+ * A simple scoring engine to flag suspicious transactions
+
+ * @param {number} amount - The transaction amount
+
+ * @param {number} userHistory - Number of previous successful transactions
+
+ * @returns {number} - A risk score from 0 to 100
+
+ */
+
+exports.calculateRiskScore = (amount, userHistory) => {
+
+  let score = 0;
+
+  
+
+  // High amount risk: if amount > 500,000 NGN
+
+  if (amount > 500000) score += 50;
+
+  
+
+  // New user risk: if the user has < 3 completed transactions
+
+  if (userHistory < 3) score += 30;
+
+
+  return score; 
+
+};

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Escrow Dashboard</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        button { margin-right: 5px; cursor: pointer; padding: 5px 10px; }
+        .error { color: red; font-weight: bold; }
+        .token-box { margin-bottom: 20px; padding: 10px; background: #f0f0f0; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Admin Escrow Dashboard</h1>
+    
+    <div id="tokenEntry" class="token-box" style="display:none;">
+        <p>No token found in storage. Paste your JWT Token below to continue:</p>
+        <input type="text" id="manualToken" style="width: 70%; padding: 5px;">
+        <button onclick="saveAndReload()">Save Token & Load Orders</button>
+    </div>
+
+    <div id="orderList">Loading...</div>
+
+    <script>
+        let token = localStorage.getItem('token'); 
+
+        function saveAndReload() {
+            const manualToken = document.getElementById('manualToken').value;
+            if (manualToken) {
+                localStorage.setItem('token', manualToken);
+                location.reload();
+            }
+        }
+
+        async function fetchOrders() {
+            const listDiv = document.getElementById('orderList');
+            if (!token) {
+                document.getElementById('tokenEntry').style.display = 'block';
+                listDiv.innerHTML = '<p class="error">Waiting for authentication token...</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://axios.get("http:///api/api/products")/api/orders/admin/orders', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401) throw new Error("Unauthorized (401): Invalid Token.");
+                if (response.status === 403) throw new Error("Forbidden (403): You are not an Admin.");
+                if (!response.ok) throw new Error(`Server Error: ${response.status}`);
+
+                const orders = await response.json();
+                
+                let html = '<table><tr><th>Order ID</th><th>Status</th><th>Actions</th></tr>';
+                orders.forEach(order => {
+                    html += `<tr>
+                        <td>${order._id}</td>
+                        <td>${order.status}</td>
+                        <td>
+                            <button onclick="resolve('${order._id}', 'release-to-seller')">Release Funds</button>
+                            <button onclick="resolve('${order._id}', 'refund')">Refund Buyer</button>
+                        </td>
+                    </tr>`;
+                });
+                listDiv.innerHTML = html + '</table>';
+            } catch (err) {
+                listDiv.innerHTML = `<p class="error">${err.message}</p>`;
+            }
+        }
+
+        async function resolve(orderId, resolution) {
+            const confirmed = confirm(`Confirm ${resolution}?`);
+            if (!confirmed) return;
+
+            try {
+                const response = await fetch('http://axios.get("http:///api/api/products")/api/orders/admin/resolve', {
+                    method: 'PUT',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}` 
+                    },
+                    body: JSON.stringify({ orderId, resolution })
+                });
+                const data = await response.json();
+                alert(data.message || "Action successful!");
+                fetchOrders();
+            } catch (err) {
+                alert("Resolution failed.");
+            }
+        }
+
+        fetchOrders();
+    </script>
+</body>
+</html>
