@@ -17,20 +17,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // --- DYNAMIC ROUTE LOADING ---
-// Instead of importing at the top, we will load them manually 
-// so the server doesn't crash if a path is slightly off.
 const loadRoutes = async () => {
     try {
-        // Change './routes/...' to match EXACTLY where your files are
-        // If your files are in the root, use './productRoutes.js'
         const productRoutes = (await import('./routes/productRoutes.js')).default;
         const userRoutes = (await import('./routes/userRoutes.js')).default;
         const orderRoutes = (await import('./routes/orderRoutes.js')).default;
+        const bankRoutes = (await import('./routes/bankRoutes.js')).default;
 
         app.use('/api/products', productRoutes);
         app.use('/api/users', userRoutes);
         app.use('/api/orders', orderRoutes);
-        console.log("Routes loaded successfully.");
+        app.use('/api/bank', bankRoutes);
+        
+        console.log("All routes loaded successfully.");
     } catch (err) {
         console.error("Error loading routes: Ensure the files exist in the 'routes' folder.");
         console.error(err.message);
