@@ -1,29 +1,48 @@
-# Sensitive data
+﻿# --- Environment Variables ---
 .env
 .env.local
+.env.development
+.env.test
+.env.production
 
-# Dependencies
+# --- Dependencies ---
 node_modules/
-*.lock
+npm-debug.log
+yarn-debug.log
+yarn-error.log
 
-# Local build artifacts
+# --- Build & Output Folders ---
 dist/
 build/
 bin/
+out/
+.next/
 
-# Uploads directory (CRITICAL: Prevents local files from reaching production)
-uploads/
-
-# MongoDB & System files
-*.wt
-WiredTiger*
-storage.bson
+# --- Database & Logs ---
+*.log
+*.sqlite
+db_data/
 diagnostic.data/
 journal/
+storage.bson
+WiredTiger*
+*.wt
 
-# Logs
-*.log
+# --- Testing Artifacts ---
+coverage/
+playwright-report/
+test-results/
+tests/
+# Note: Keep 'tests/' only if you are sure these are generated outputs 
+# and not your actual test source code.
 
-# OS Metadata
+# --- OS & IDE Metadata ---
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Uploads ---
+uploads/
