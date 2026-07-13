@@ -8,6 +8,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// 1. Strict Environment Check
+if (!process.env.MONGODB_URI) {
+    console.error("FATAL ERROR: MONGODB_URI is not set in environment variables.");
+    process.exit(1);
+}
+
 const app = express();
 
 // Middleware
@@ -19,6 +25,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // --- DYNAMIC ROUTE LOADING ---
 const loadRoutes = async () => {
     try {
+        // Ensure these files exist in your 'routes' folder!
         const productRoutes = (await import('./routes/productRoutes.js')).default;
         const userRoutes = (await import('./routes/userRoutes.js')).default;
         const orderRoutes = (await import('./routes/orderRoutes.js')).default;
@@ -31,8 +38,8 @@ const loadRoutes = async () => {
         
         console.log("All routes loaded successfully.");
     } catch (err) {
-        console.error("Error loading routes: Ensure the files exist in the 'routes' folder.");
-        console.error(err.message);
+        console.error("CRITICAL ERROR loading routes:", err);
+        process.exit(1);
     }
 };
 
@@ -43,7 +50,7 @@ const connectDB = async () => {
         await mongoose.connect(process.env.MONGODB_URI);
         console.log("Connected to MongoDB successfully!");
     } catch (err) {
-        console.error("DB Connection Error:", err.message);
+        console.error("CRITICAL DB CONNECTION ERROR:", err);
         process.exit(1); 
     }
 };
