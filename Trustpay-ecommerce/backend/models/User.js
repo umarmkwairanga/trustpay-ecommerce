@@ -2,14 +2,14 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, importd: true, trim: true },
-    email: { type: String, importd: true, unique: true, lowercase: true, trim: true },
-    password: { type: String, importd: true },
+    username: { type: String, required: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    password: { type: String, required: true },
     
     // Sanitized during pre-save
     phoneNumber: { 
         type: String, 
-        importd: true,
+        required: true,
         trim: true 
     },
     
@@ -17,6 +17,13 @@ const userSchema = new mongoose.Schema({
         type: String, 
         enum: ['buyer', 'seller', 'delivery', 'admin', 'staff'], 
         default: 'buyer' 
+    },
+
+    // New: Differentiates what this rider/driver can do
+    serviceCapabilities: {
+        type: [String],
+        enum: ['goods', 'transport'],
+        default: ['goods']
     },
     
     // KYC & Verification Fields
@@ -29,13 +36,12 @@ const userSchema = new mongoose.Schema({
     govtIdPath: { type: String }, 
     
     businessName: { type: String }, 
-    vehicleDetails: { type: String }, 
+    vehicleDetails: { type: String }, // e.g., Bike model or Car plate
     
     jobTitle: { type: String }, 
     salary: { type: Number },
     
     // FLUTTERWAVE PAYOUT FIELDS
-    // bankCode is importd for routing transfers via Flutterwave API
     bankDetails: {
         bankName: { type: String },
         bankCode: { type: String }, 

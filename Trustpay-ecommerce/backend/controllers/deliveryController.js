@@ -1,16 +1,27 @@
-const Delivery = import('../models/Delivery');
+import Delivery from '../models/Delivery.js';
+import Order from '../models/Order.js';
 
-// Update delivery status (e.g., set to 'delivered')
-exports.updateDeliveryStatus = async (req, res) => {
+export const updateDeliveryStatus = async (req, res) => {
     try {
-        const { status, trackingNumber } = req.body;
+        const { status } = req.body; // e.g., 'delivered'
+        
+        // 1. Update the Delivery record
         const delivery = await Delivery.findByIdAndUpdate(
             req.params.id, 
-            { status, trackingNumber }, 
+            { status }, 
             { new: true }
         );
-        res.status(200).json(delivery);
+
+        if (!delivery) return res.status(404).json({ message: "Delivery not found" });
+
+        // 2. IF delivered, update the Order status so it appears in the Payout Dashboard
+        if (status === 'delivered') {
+            await Order.findByIdAndUpdate(delivery.order, { status: 'delivered' });
+            console.log(`Order ${delivery.order} marked as delivered. Ready for payout.`);
+        }
+
+        res.status(200).json({ message: "Delivery status updated", delivery });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };

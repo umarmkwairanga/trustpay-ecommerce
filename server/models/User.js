@@ -5,7 +5,13 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, default: 'user' },
+  
+  // Updated Role field with strict validation
+  role: { 
+    type: String, 
+    enum: ['user', 'admin', 'ceo'], 
+    default: 'user' 
+  },
 
   // New Security & Compliance Fields (For Escrow)
   is2FAEnabled: { type: Boolean, default: false },

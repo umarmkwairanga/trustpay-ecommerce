@@ -2,9 +2,9 @@ import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
+// 1. Register: Uses Model pre-save hook for password hashing
 export const register = async (req, res) => {
     try {
-        // Let the Model's pre-save hook handle the hashing and phone sanitization
         const user = await User.create(req.body);
         
         res.status(201).json({ 
@@ -16,12 +16,13 @@ export const register = async (req, res) => {
     }
 };
 
+// 2. Login: Verifies credentials and issues a role-based JWT
 export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
         
-        // Use select('+password') if your schema sets password to { select: false }
-        const user = await User.findOne({ email });
+        // Ensure your User model schema has 'select: false' on the password field
+        const user = await User.findOne({ email }).select('+password');
         
         if (user && (await bcrypt.compare(password, user.password))) {
             const token = jwt.sign(
@@ -33,12 +34,12 @@ export const login = async (req, res) => {
             res.json({ 
                 token, 
                 role: user.role,
-                username: user.username 
+                username: user.name // Assuming you store name as 'name'
             });
         } else {
             res.status(401).json({ message: "Invalid credentials" });
         }
     } catch (err) {
-        res.status(500).json({ error: "Login failed" });
+        res.status(500).json({ error: "Login failed: " + err.message });
     }
 };

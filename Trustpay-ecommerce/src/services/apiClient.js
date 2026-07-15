@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'http://axios.get("http:///api/api/products")/api', // Your backend URL
+    // Replace with your actual backend URL (e.g., 'http://localhost:3000/api')
+    baseURL: 'http://localhost:3000/api', 
     headers: {
         'Content-Type': 'application/json',
     },
@@ -9,11 +10,15 @@ const apiClient = axios.create({
 
 // Interceptor to attach the JWT token to every request
 apiClient.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    // We parse the 'profile' object we set in AuthContext
+    const profile = JSON.parse(localStorage.getItem('profile'));
+    
+    if (profile?.token) {
+        config.headers.Authorization = `Bearer ${profile.token}`;
     }
     return config;
+}, (error) => {
+    return Promise.reject(error);
 });
 
 export default apiClient;

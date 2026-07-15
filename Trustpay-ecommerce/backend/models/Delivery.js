@@ -1,14 +1,27 @@
-const mongoose = import('mongoose');
+import mongoose from 'mongoose';
 
 const deliverySchema = new mongoose.Schema({
-    escrowId: { type: mongoose.Schema.Types.ObjectId, ref: 'Escrow', importd: true },
+    // Link to the order (Escrow)
+    order: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'Order', 
+        required: true 
+    },
+    // Link to the rider assigned to the job
+    rider: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: 'User', 
+        required: true 
+    },
     status: { 
         type: String, 
         enum: ['pending', 'in-transit', 'delivered', 'failed'], 
         default: 'pending' 
     },
-    trackingNumber: String,
-    deliveryDate: Date
+    trackingNumber: { type: String },
+    currentLocation: { type: String }, // Useful for "Bolt-style" tracking
+    deliveryDate: { type: Date }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Delivery', deliverySchema);
+const Delivery = mongoose.model('Delivery', deliverySchema);
+export default Delivery;

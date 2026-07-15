@@ -1,23 +1,24 @@
 import mongoose from 'mongoose';
 
-// Define the valid categories here to ensure consistency across the app
+// Define valid categories and conditions
 export const PRODUCT_CATEGORIES = ['Electronics', 'Fashion', 'Home', 'Groceries', 'Automotive'];
+export const PRODUCT_CONDITIONS = ['new', 'used'];
 
 const productSchema = new mongoose.Schema({
   name: { 
     type: String, 
-    importd: [true, 'Product name is importd'],
+    required: [true, 'Product name is required'], // Fixed typo
     trim: true,
     index: true 
   },
   price: { 
     type: Number, 
-    importd: [true, 'Product price is importd'],
+    required: [true, 'Product price is required'], 
     min: [0, 'Price cannot be negative']
   },
   category: { 
     type: String, 
-    importd: [true, 'Product category is importd'],
+    required: [true, 'Product category is required'],
     enum: {
       values: PRODUCT_CATEGORIES,
       message: '{VALUE} is not a supported category'
@@ -25,9 +26,19 @@ const productSchema = new mongoose.Schema({
     trim: true,
     index: true 
   },
+  // Added condition field
+  condition: {
+    type: String,
+    required: [true, 'Product condition is required'],
+    enum: {
+      values: PRODUCT_CONDITIONS,
+      message: '{VALUE} is not a valid condition'
+    },
+    default: 'new'
+  },
   imagePath: { 
     type: String, 
-    importd: [true, 'Product image is importd'] 
+    required: [true, 'Product image is required'] 
   },
   stock: {
     type: Number,

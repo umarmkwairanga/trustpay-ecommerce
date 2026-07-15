@@ -1,9 +1,13 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
 
-// Helper to generate a token
-const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+// Helper to generate a token including the user role
+const generateToken = (user) => {
+    return jwt.sign(
+        { id: user._id, role: user.role }, 
+        process.env.JWT_SECRET, 
+        { expiresIn: '30d' }
+    );
 };
 
 // @desc    Register a new user
@@ -15,12 +19,16 @@ export const registerUser = async (req, res) => {
         if (userExists) return res.status(400).json({ message: "User already exists" });
 
         const user = await User.create({ username, email, password });
-        res.status(201).json({
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-            token: generateToken(user._id)
-        });
+        
+        if (user) {
+            res.status(201).json({
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                role: user.role,
+                token: generateToken(user)
+            });
+        }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -37,7 +45,8 @@ export const loginUser = async (req, res) => {
                 _id: user._id,
                 username: user.username,
                 email: user.email,
-                token: generateToken(user._id)
+                role: user.role,
+                token: generateToken(user)
             });
         } else {
             res.status(401).json({ message: "Invalid email or password" });
