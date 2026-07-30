@@ -1,32 +1,37 @@
+// controllers/productController.js
 import Product from '../models/Product.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
 
-export const addProduct = async (req, res) => {
-    try {
-        // Extracting data from the request body
-        const { name, price, category, stock, description } = req.body;
-        
-        // Creating the product instance
-        const newProduct = new Product({
-            name,
-            price,
-            category,
-            stock,
-            description,
-            // If you are using multer, req.file will contain the image path
-            imagePath: req.file ? req.file.path : null
-        });
+export const getAllProducts = asyncHandler(async (req, res) => {
+    const products = await Product.find();
+    res.json(products);
+});
 
-        // Saving to MongoDB
-        const savedProduct = await newProduct.save();
+export const addProduct = asyncHandler(async (req, res) => {
+    const newProduct = new Product({
+        ...req.body,
+        imagePath: req.file ? req.file.path : null
+    });
+    const savedProduct = await newProduct.save();
+    res.status(201).json({ message: 'Product added successfully!', product: savedProduct });
+});
 
-        res.status(201).json({ 
-            message: 'Product added successfully!', 
-            product: savedProduct 
-        });
-    } catch (error) {
-        res.status(400).json({ 
-            message: "Error adding product", 
-            error: error.message 
-        });
+export const updateProduct = asyncHandler(async (req, res) => {
+    const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    if (!updatedProduct) {
+        const err = new Error("Product not found");
+        err.statusCode = 404;
+        throw err;
     }
-};
+    res.json(updatedProduct);
+});
+
+export const deleteProduct = asyncHandler(async (req, res) => {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    if (!deletedProduct) {
+        const err = new Error("Product not found");
+        err.statusCode = 404;
+        throw err;
+    }
+    res.json({ message: "Product deleted successfully" });
+});

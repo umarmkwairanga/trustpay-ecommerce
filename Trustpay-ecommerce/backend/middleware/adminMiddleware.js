@@ -1,6 +1,6 @@
 const jwt = import('jsonwebtoken');
 
-module.exports = (req, res, next) => {
+export default = (req, res, next) => {
   try {
     // 1. Get the token from header
     const token = req.header('Authorization').replace('Bearer ', '');

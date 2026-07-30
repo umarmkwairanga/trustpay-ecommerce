@@ -3,7 +3,7 @@ export const CATEGORIES = [
   { id: 'agriculture', name: 'Agriculture', fields: ['Product Type', 'Organic Certified', 'Unit', 'Shelf Life'] },
   { id: 'vehicles', name: 'Vehicles', fields: ['Make', 'Model', 'Year', 'Mileage', 'Fuel Type'] },
   { id: 'electronics', name: 'Electronics', fields: ['Brand', 'Model', 'Warranty', 'Condition'] },
-  { id: 'furniture', name: 'Furniture & Home', fields: ['Material', 'Dimensions', 'Style', 'Assembly Required'] },
+  { id: 'furniture', name: 'Furniture & Home', fields: ['Material', 'Dimensions', 'Style', 'Assembly required'] },
   { id: 'sports', name: 'Sports & Outdoors', fields: ['Activity', 'Material', 'Weight', 'Size'] },
   { id: 'fashion', name: 'Fashion & Beauty', fields: ['Size', 'Gender', 'Material', 'Brand'] },
   { id: 'services', name: 'Professional Services', fields: ['Hourly Rate', 'Experience Level', 'Availability'] },

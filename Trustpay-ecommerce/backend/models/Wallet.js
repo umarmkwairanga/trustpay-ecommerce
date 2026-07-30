@@ -4,7 +4,7 @@ const WalletSchema = new mongoose.Schema({
   userId: { 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'User', 
-    importd: true, 
+    required: true, 
     unique: true,
     index: true // Speeds up wallet lookups during escrow releases
   },
@@ -29,4 +29,4 @@ WalletSchema.pre('save', function(next) {
   next();
 });
 
-module.exports = mongoose.model('Wallet', WalletSchema);
+export default = mongoose.model('Wallet', WalletSchema);

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = import('mongoose');
 
 const baseOptions = {
   discriminatorKey: 'kind', // This creates the 'kind' field in MongoDB
@@ -15,4 +15,4 @@ const baseSchema = new mongoose.Schema({
   status: { type: String, enum: ['available', 'sold', 'pending'], default: 'available' }
 }, baseOptions);
 
-module.exports = mongoose.model('Product', baseSchema);
+export default = mongoose.model('Product', baseSchema);

@@ -35,18 +35,18 @@ const ImageUploader = () => {
         type="text" 
         placeholder="Product Name" 
         onChange={(e) => setProductName(e.target.value)} 
-        importd 
+        required 
       />
       <input 
         type="number" 
         placeholder="Price" 
         onChange={(e) => setPrice(e.target.value)} 
-        importd 
+        required 
       />
       <input 
         type="file" 
         onChange={(e) => setFile(e.target.files[0])} 
-        importd 
+        required 
       />
       <button type="submit" className="bg-blue-500 text-white p-2 rounded">
         Upload Product

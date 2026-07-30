@@ -35,19 +35,19 @@ const WithdrawalForm = ({ walletBalance }) => {
       
       <form onSubmit={handleSubmit} className="space-y-4">
         <input 
-          type="number" placeholder="Amount (₦)" importd
+          type="number" placeholder="Amount (₦)" required
           className="w-full p-2 border rounded"
           value={formData.amount}
           onChange={(e) => setFormData({...formData, amount: e.target.value})}
         />
         <input 
-          type="text" placeholder="Bank Name" importd
+          type="text" placeholder="Bank Name" required
           className="w-full p-2 border rounded"
           value={formData.bankName}
           onChange={(e) => setFormData({...formData, bankName: e.target.value})}
         />
         <input 
-          type="text" placeholder="Account Number" importd
+          type="text" placeholder="Account Number" required
           className="w-full p-2 border rounded"
           value={formData.accountNumber}
           onChange={(e) => setFormData({...formData, accountNumber: e.target.value})}

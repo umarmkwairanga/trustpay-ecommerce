@@ -28,7 +28,7 @@ export const getByCategory = async (req, res) => {
 // 3. Get only the logged-in user's listings (for Profile page)
 export const getMyListings = async (req, res) => {
     try {
-        // Requires authentication middleware to have set req.user
+        // imports authentication middleware to have set req.user
         const listings = await Product.find({ sellerId: req.user.id })
             .sort({ createdAt: -1 });
         res.status(200).json(listings);

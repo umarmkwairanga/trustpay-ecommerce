@@ -8,6 +8,6 @@ const handleSubmit = async (e) => {
     );
     alert('Payment Secured!');
   } catch (err) {
-    alert('Login importd to checkout.');
+    alert('Login required to checkout.');
   }
 };

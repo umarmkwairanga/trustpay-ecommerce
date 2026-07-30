@@ -24,7 +24,7 @@ exports.createEmployee = async (req, res) => {
       subject: "Welcome to TrustPayEcommerceEcommerce - Your Account Details",
       html: `<p>Hello ${fullName},</p>
              <p>Your account has been created. Your temporary password is: <strong>${tempPassword}</strong></p>
-             <p>You will be importd to change this password upon your first login.</p>`
+             <p>You will be required to change this password upon your first login.</p>`
     });
 
     res.status(201).json({ message: "Employee created and credentials sent." });

@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const Joi = import('joi');
 
 const validateVehicle = (req, res, next) => {
   const schema = Joi.object({
@@ -22,4 +22,4 @@ const validateVehicle = (req, res, next) => {
   next(); // Data is valid, proceed to controller
 };
 
-module.exports = { validateVehicle };
+export default = { validateVehicle };

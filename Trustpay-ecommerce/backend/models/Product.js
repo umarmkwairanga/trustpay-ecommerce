@@ -7,18 +7,18 @@ export const PRODUCT_CONDITIONS = ['new', 'used'];
 const productSchema = new mongoose.Schema({
   name: { 
     type: String, 
-    required: [true, 'Product name is required'], // Fixed typo
+    required: [true, 'Product name is required'], // Changed back to required
     trim: true,
     index: true 
   },
   price: { 
     type: Number, 
-    required: [true, 'Product price is required'], 
+    required: [true, 'Product price is required'], // Changed back to required
     min: [0, 'Price cannot be negative']
   },
   category: { 
     type: String, 
-    required: [true, 'Product category is required'],
+    required: [true, 'Product category is required'], // Changed back to required
     enum: {
       values: PRODUCT_CATEGORIES,
       message: '{VALUE} is not a supported category'
@@ -26,10 +26,9 @@ const productSchema = new mongoose.Schema({
     trim: true,
     index: true 
   },
-  // Added condition field
   condition: {
     type: String,
-    required: [true, 'Product condition is required'],
+    required: [true, 'Product condition is required'], // Changed back to required
     enum: {
       values: PRODUCT_CONDITIONS,
       message: '{VALUE} is not a valid condition'
@@ -38,7 +37,7 @@ const productSchema = new mongoose.Schema({
   },
   imagePath: { 
     type: String, 
-    required: [true, 'Product image is required'] 
+    required: [true, 'Product image is required'] // Changed back to required
   },
   stock: {
     type: Number,

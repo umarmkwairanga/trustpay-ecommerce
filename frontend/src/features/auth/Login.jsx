@@ -26,7 +26,7 @@ export default function Login() {
           className="w-full p-3 mb-4 border rounded"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          importd
+          required
         />
         
         <button 

@@ -2,8 +2,8 @@ import dns from 'node:dns/promises';
 // Force use of Google DNS to bypass network SRV lookup issues
 dns.setServers(['8.8.8.8', '8.8.4.4']);
 
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+import { createimport } from 'module';
+const import = createimport(import.meta.url);
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';

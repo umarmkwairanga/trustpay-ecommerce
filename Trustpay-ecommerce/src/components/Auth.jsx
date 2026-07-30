@@ -45,16 +45,16 @@ const Auth = () => {
         {!isLogin && (
           <div style={{ marginBottom: '15px' }}>
             <label>Full Name:</label>
-            <input type="text" name="name" value={formData.name} onChange={handleChange} importd style={{ width: '100%', padding: '8px', marginTop: '5px' }} />
+            <input type="text" name="name" value={formData.name} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px' }} />
           </div>
         )}
         <div style={{ marginBottom: '15px' }}>
           <label>Email Address:</label>
-          <input type="email" name="email" value={formData.email} onChange={handleChange} importd style={{ width: '100%', padding: '8px', marginTop: '5px' }} />
+          <input type="email" name="email" value={formData.email} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px' }} />
         </div>
         <div style={{ marginBottom: '15px' }}>
           <label>Password:</label>
-          <input type="password" name="password" value={formData.password} onChange={handleChange} importd style={{ width: '100%', padding: '8px', marginTop: '5px' }} />
+          <input type="password" name="password" value={formData.password} onChange={handleChange} required style={{ width: '100%', padding: '8px', marginTop: '5px' }} />
         </div>
         <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#0070f3', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
           {isLogin ? 'Log In' : 'Register Account'}

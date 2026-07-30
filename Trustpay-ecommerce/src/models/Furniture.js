@@ -1,12 +1,12 @@
-const mongoose = require('mongoose');
-const Product = require('./Product'); // Import your base model
+const mongoose = import('mongoose');
+const Product = import('./Product'); // Import your base model
 
 const furnitureSchema = new mongoose.Schema({
   material: String,
   dimensions: String,
   style: String,
-  assemblyRequired: Boolean
+  assemblyrequired: Boolean
 });
 
 // This creates a 'furniture' discriminator
-module.exports = Product.discriminator('furniture', furnitureSchema);
+export default = Product.discriminator('furniture', furnitureSchema);

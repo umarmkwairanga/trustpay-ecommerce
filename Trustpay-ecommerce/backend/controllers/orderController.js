@@ -1,30 +1,60 @@
 import Order from '../models/Order.js';
 import AuditLog from '../models/AuditLog.js';
+import Livestock from '../models/Livestock.js'; // NEW: Livestock model for animal escrow validation
 // FIXED: Changed path to step up 3 levels to the repository root
 import flw from '../../../services/flutterwave.js'; 
 // NOTE: If notificationService also lives at the root alongside flutterwave, use '../../../' here too:
 import { sendOrderNotification } from '../../../services/notificationService.js';
 import { addLoyaltyPoints } from './loyaltyController.js';
 
-// 1. Create a new order
+// 1. Create a new order (Supports standard orders and Livestock escrow initialization)
 export const createOrder = async (req, res) => {
     try {
-        const { items, totalAmount, reference, sellerId } = req.body; 
+        const { items, totalAmount, reference, sellerId, isLivestock, livestockId, quantity, deliveryAddress, deliveryNotes } = req.body; 
+        
+        let targetSellerId = sellerId;
+
+        // If this is a livestock purchase, validate stock and pull seller directly from the livestock record
+        if (isLivestock && livestockId) {
+            const livestockItem = await Livestock.findById(livestockId);
+            if (!livestockItem) {
+                return res.status(404).json({ message: "Livestock listing not found." });
+            }
+            if (livestockItem.quantityAvailable < (quantity || 1)) {
+                return res.status(400).json({ message: "Not enough livestock available in stock." });
+            }
+            targetSellerId = livestockItem.seller;
+        }
+
         const newOrder = new Order({
             buyer: req.user.id,
-            seller: sellerId,
+            seller: targetSellerId,
             items, 
             totalAmount,
             reference, 
-            status: 'pending'
+            status: 'pending',
+            isLivestock: !!isLivestock,
+            livestockItem: livestockId || null,
+            deliveryDetails: {
+                address: deliveryAddress,
+                notes: deliveryNotes
+            }
         });
+
         await newOrder.save();
+        
+        // If livestock order, deduct inventory immediately upon creation intent
+        if (isLivestock && livestockId) {
+            await Livestock.findByIdAndUpdate(livestockId, {
+                $inc: { quantityAvailable: -(quantity || 1) }
+            });
+        }
         
         await AuditLog.create({
             userId: req.user.id,
             action: 'CREATE_ORDER',
             targetId: newOrder._id,
-            details: `Order created with reference: ${reference}`
+            details: `Order created with reference: ${reference} ${isLivestock ? '(Livestock Module)' : ''}`
         });
 
         res.status(201).json({ message: "Order created successfully", orderId: newOrder._id });
@@ -57,6 +87,11 @@ export const verifyPayment = async (req, res) => {
                 if (order.buyer?.phoneNumber) {
                     await sendOrderNotification(order.buyer.phoneNumber, order._id, 'PAID');
                 }
+
+                // Add loyalty points for successful purchase
+                if (order.buyer?._id) {
+                    await addLoyaltyPoints(order.buyer._id, order.totalAmount);
+                }
             }
             res.status(200).json({ message: "Payment verified", order });
         } else {
@@ -67,7 +102,7 @@ export const verifyPayment = async (req, res) => {
     }
 };
 
-// 3. Confirm delivery (CEO Approval Required for Payout)
+// 3. Confirm delivery (CEO Approval required for Payout)
 export const confirmDelivery = async (req, res) => {
     try {
         const order = await Order.findById(req.params.orderId);

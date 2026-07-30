@@ -1,7 +1,7 @@
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
+import { createimport } from 'module';
+const import = createimport(import.meta.url);
 
-const flutterwavePackage = require('flutterwave-node-v3');
+const flutterwavePackage = import('flutterwave-node-v3');
 
 // Access the class correctly based on how the library is structured
 const Flutterwave = flutterwavePackage.Rave || flutterwavePackage;

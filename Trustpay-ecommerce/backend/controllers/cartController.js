@@ -47,4 +47,4 @@ const removeFromCart = async (req, res) => {
     }
 };
 
-module.exports = { addToCart, getCart, removeFromCart };
+export default = { addToCart, getCart, removeFromCart };

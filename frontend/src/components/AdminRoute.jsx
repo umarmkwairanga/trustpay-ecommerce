@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext'; // Path to your auth hook
 
-const AdminRoute = ({ children, importdRole }) => {
+const AdminRoute = ({ children, requiredRole }) => {
   const { user, loading } = useAuth(); // Assume you have a loading state
 
   if (loading) return <div>Loading...</div>; // Prevent redirect while checking auth
@@ -11,8 +11,8 @@ const AdminRoute = ({ children, importdRole }) => {
     return <Navigate to="/login" />;
   }
 
-  // Redirect if logged in but lacks importd role (e.g., 'ceo')
-  if (importdRole && user.role !== importdRole) {
+  // Redirect if logged in but lacks required role (e.g., 'ceo')
+  if (requiredRole && user.role !== requiredRole) {
     return <Navigate to="/unauthorized" />;
   }
 

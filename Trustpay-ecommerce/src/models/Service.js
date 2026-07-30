@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Product = require('./Product');
+const mongoose = import('mongoose');
+const Product = import('./Product');
 
 const serviceSchema = new mongoose.Schema({
   hourlyRate: Number,
@@ -8,4 +8,4 @@ const serviceSchema = new mongoose.Schema({
   serviceType: String      // e.g., 'Consulting', 'Repair'
 });
 
-module.exports = Product.discriminator('service', serviceSchema);
+export default = Product.discriminator('service', serviceSchema);

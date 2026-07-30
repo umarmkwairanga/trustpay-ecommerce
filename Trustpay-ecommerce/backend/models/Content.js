@@ -3,12 +3,12 @@ const mongoose = import('mongoose');
 const contentSchema = new mongoose.Schema({
   page: { 
     type: String, 
-    importd: true, 
+    required: true, 
     unique: true 
   }, // e.g., 'terms', 'privacy', 'about'
   body: { 
     type: String, 
-    importd: true 
+    required: true 
   },
   translations: {
     yoruba: { type: String },
@@ -21,4 +21,4 @@ const contentSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Content', contentSchema);
+export default = mongoose.model('Content', contentSchema);

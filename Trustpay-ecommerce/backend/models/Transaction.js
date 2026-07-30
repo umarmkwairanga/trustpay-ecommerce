@@ -4,18 +4,18 @@ const TransactionSchema = new mongoose.Schema({
     // Critical for tracking Paystack payments
     reference: { 
         type: String, 
-        importd: true, 
+        required: true, 
         unique: true, 
         index: true 
     },
     
     // Using Strings for now as per your initial structure, 
     // but you can later change these to { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-    buyer: { type: String, importd: true },
-    seller: { type: String, importd: true },
-    product: { type: String, importd: true },
+    buyer: { type: String, required: true },
+    seller: { type: String, required: true },
+    product: { type: String, required: true },
     
-    amount: { type: Number, importd: true },
+    amount: { type: Number, required: true },
     
     // Status management for the Escrow flow
     status: { 
@@ -35,4 +35,4 @@ const TransactionSchema = new mongoose.Schema({
     timestamps: true 
 });
 
-module.exports = mongoose.model('Transaction', TransactionSchema);
+export default = mongoose.model('Transaction', TransactionSchema);

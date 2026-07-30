@@ -24,7 +24,7 @@ const isValidTxRef = (ref, prefix = 'TRUSTPAY') => {
   return regex.test(ref);
 };
 
-module.exports = { 
+export default = { 
   generateTxRef,
   isValidTxRef 
 };

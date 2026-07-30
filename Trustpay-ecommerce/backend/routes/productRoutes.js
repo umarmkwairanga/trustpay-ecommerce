@@ -1,7 +1,8 @@
-const express = import('express');
+import express from 'express';
+import mongoose from 'mongoose';
+import Product from '../models/Product.js'; // Ensure the .js extension is included
+
 const router = express.Router();
-const Product = import('../models/Product');
-const mongoose = import('mongoose');
 
 // GET all products
 router.get('/', async (req, res) => {
@@ -15,14 +16,14 @@ router.get('/', async (req, res) => {
 
 // POST a new product
 router.post('/', async (req, res) => {
-    console.log("DEBUG: POST /api/products received:", req.body); // Added for debugging
+    console.log("DEBUG: POST /api/products received:", req.body);
     try {
         const newProduct = new Product(req.body);
         await newProduct.save();
-        console.log("DEBUG: Product saved successfully"); // Added for debugging
+        console.log("DEBUG: Product saved successfully");
         res.status(201).json(newProduct);
     } catch (err) {
-        console.error("DEBUG: Save error:", err.message); // Added for debugging
+        console.error("DEBUG: Save error:", err.message);
         res.status(400).json({ error: err.message });
     }
 });
@@ -61,4 +62,4 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

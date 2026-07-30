@@ -69,7 +69,7 @@ const EscrowDashboard = () => {
               type="number" 
               value={amount} 
               onChange={(e) => setAmount(e.target.value)} 
-              importd 
+              required 
               style={{ width: '100%', padding: '8px 8px 8px 25px', boxSizing: 'border-box' }} 
               placeholder="e.g. 50000" 
             />

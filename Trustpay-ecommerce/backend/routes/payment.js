@@ -32,4 +32,4 @@ router.post('/paystack/webhook', (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

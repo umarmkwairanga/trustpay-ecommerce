@@ -6,21 +6,38 @@ const Login = () => {
     const [password, setPassword] = useState('');
 
     const handleLogin = async (e) => {
-        e.preventDefault(); // Prevents page reload
+        e.preventDefault();
         try {
             const response = await api.post('/auth/login', { email, password });
-            localStorage.setItem('token', response.data.token);
-            window.location.href = '/dashboard'; // Redirect to your app's home/dashboard
+            
+            // Ensure this key matches what your axios interceptor looks for
+            localStorage.setItem('jwt_token', response.data.token);
+            localStorage.setItem('user_role', response.data.role); // Store role for ProtectedRoute
+            
+            // Redirect based on role
+            window.location.href = response.data.role === 'admin' ? '/admin/payouts' : '/rider-dashboard';
         } catch (err) {
-            alert("Login failed: " + err.response?.data?.message || "Check your credentials");
+            alert("Login failed: " + (err.response?.data?.message || "Check your credentials"));
         }
     };
 
     return (
         <form onSubmit={handleLogin}>
-            <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Email" importd />
-            <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" importd />
+            <input 
+                type="email" 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="Email" 
+                required 
+            />
+            <input 
+                type="password" 
+                onChange={(e) => setPassword(e.target.value)} 
+                placeholder="Password" 
+                required 
+            />
             <button type="submit">Login</button>
         </form>
     );
 };
+
+export default Login;

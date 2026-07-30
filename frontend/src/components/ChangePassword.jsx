@@ -29,7 +29,7 @@ const ChangePassword = () => {
           type="password" 
           placeholder="New Password" 
           onChange={(e) => setNewPassword(e.target.value)} 
-          importd 
+          required 
         />
         <button type="submit">Update Password</button>
       </form>

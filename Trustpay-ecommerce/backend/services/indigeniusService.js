@@ -24,4 +24,4 @@ async function getVoiceTranslation(text, language = 'yoruba') {
     }
 }
 
-module.exports = { getVoiceTranslation };
+export default = { getVoiceTranslation };

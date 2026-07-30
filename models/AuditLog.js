@@ -4,19 +4,19 @@ const auditSchema = new mongoose.Schema({
     userId: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
-        importd: true 
+        required: true 
     },
     action: { 
         type: String, 
-        importd: true 
+        required: true 
     }, // e.g., "RELEASE_ESCROW", "REFUND_ORDER", "ASSIGN_RIDER"
     targetId: { 
         type: String, 
-        importd: true 
+        required: true 
     }, // The ID of the order or product being modified
     details: { 
         type: String, 
-        importd: true 
+        required: true 
     }, // Descriptive text about what happened
     timestamp: { 
         type: Date, 

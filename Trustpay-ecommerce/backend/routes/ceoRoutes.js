@@ -1,11 +1,11 @@
 // backend/routes/ceoRoutes.js
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
-const { authorizeCEO } = require('../middleware/auth'); // The middleware we discussed
-const Order = require('../models/Order');
-const User = require('../models/User');
-const Escrow = require('../models/Escrow');
+const { protect } = import('../middleware/authMiddleware');
+const { authorizeCEO } = import('../middleware/auth'); // The middleware we discussed
+const Order = import('../models/Order');
+const User = import('../models/User');
+const Escrow = import('../models/Escrow');
 
 router.get('/dashboard-stats', protect, authorizeCEO, async (req, res) => {
   try {
@@ -29,4 +29,4 @@ router.get('/dashboard-stats', protect, authorizeCEO, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

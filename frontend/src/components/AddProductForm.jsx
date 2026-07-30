@@ -5,7 +5,7 @@ import { z } from 'zod';
 const productSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   price: z.coerce.number().min(0, "Price cannot be negative"),
-  category: z.string().min(2, "Category is importd"),
+  category: z.string().min(2, "Category is required"),
   stock: z.coerce.number().int().min(0, "Stock cannot be negative"),
   description: z.string().min(10, "Description must be at least 10 characters")
 });
@@ -76,12 +76,12 @@ function AddProductForm() {
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg space-y-4">
       <h2 className="text-2xl font-bold text-gray-800 mb-4">Add New Product</h2>
       
-      <input name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} className="w-full p-2 border rounded" importd />
-      <input name="price" type="number" placeholder="Price" value={formData.price} onChange={handleChange} className="w-full p-2 border rounded" importd />
-      <input name="category" placeholder="Category" value={formData.category} onChange={handleChange} className="w-full p-2 border rounded" importd />
-      <input name="stock" type="number" placeholder="Stock Quantity" value={formData.stock} onChange={handleChange} className="w-full p-2 border rounded" importd />
-      <textarea name="description" placeholder="Product Description" value={formData.description} onChange={handleChange} className="w-full p-2 border rounded" importd />
-      <input type="file" onChange={handleFileChange} accept="image/*" className="w-full p-2 border rounded" importd />
+      <input name="name" placeholder="Product Name" value={formData.name} onChange={handleChange} className="w-full p-2 border rounded" required />
+      <input name="price" type="number" placeholder="Price" value={formData.price} onChange={handleChange} className="w-full p-2 border rounded" required />
+      <input name="category" placeholder="Category" value={formData.category} onChange={handleChange} className="w-full p-2 border rounded" required />
+      <input name="stock" type="number" placeholder="Stock Quantity" value={formData.stock} onChange={handleChange} className="w-full p-2 border rounded" required />
+      <textarea name="description" placeholder="Product Description" value={formData.description} onChange={handleChange} className="w-full p-2 border rounded" required />
+      <input type="file" onChange={handleFileChange} accept="image/*" className="w-full p-2 border rounded" required />
       
       <button 
         type="submit" 

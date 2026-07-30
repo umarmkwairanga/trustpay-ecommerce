@@ -1,11 +1,11 @@
 const mongoose = import('mongoose');
 
 const auditLogSchema = new mongoose.Schema({
-  actor: { type: mongoose.Schema.Types.ObjectId, ref: 'User', importd: true },
-  action: { type: String, importd: true }, // e.g., 'RESOLVE_DISPUTE', 'UPDATE_SELLER_STATUS'
-  targetId: { type: mongoose.Schema.Types.ObjectId, importd: true },
+  actor: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  action: { type: String, required: true }, // e.g., 'RESOLVE_DISPUTE', 'UPDATE_SELLER_STATUS'
+  targetId: { type: mongoose.Schema.Types.ObjectId, required: true },
   details: { type: Object },
   timestamp: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('AuditLog', auditLogSchema);
+export default = mongoose.model('AuditLog', auditLogSchema);

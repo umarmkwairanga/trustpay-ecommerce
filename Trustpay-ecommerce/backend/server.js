@@ -17,6 +17,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import ceoRoutes from './routes/ceoRoutes.js';
 import translationRoutes from './routes/translationRoutes.js';
+import livestockRoutes from './routes/livestockRoutes.js'; // NEW: Imported livestock routes
 
 // Import Middleware
 import { protect, authorizeCEO } from './middleware/auth.js';
@@ -84,6 +85,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/ceo', protect, authorizeCEO, ceoRoutes);
 app.use('/api/translation', protect, authorizeCEO, translationRoutes);
+app.use('/api/livestock', livestockRoutes); // NEW: Mounted livestock API endpoints
 
 app.get('/api/products', async (req, res) => {
     try {

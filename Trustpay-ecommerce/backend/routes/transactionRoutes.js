@@ -6,4 +6,4 @@ const transactionController = import('../controllers/transactionController');
 // So the full URL will be: /api/transactions/create
 router.post('/create', transactionController.createTransaction);
 
-module.exports = router;
+export default router;

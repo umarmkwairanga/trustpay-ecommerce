@@ -2,9 +2,9 @@ const mongoose = import('mongoose');
 
 // Define what an Escrow Transaction looks like
 const EscrowSchema = new mongoose.Schema({
-  buyerId: { type: String, importd: true },
-  sellerId: { type: String, importd: true },
-  amount: { type: Number, importd: true },
+  buyerId: { type: String, required: true },
+  sellerId: { type: String, required: true },
+  amount: { type: Number, required: true },
   status: { 
     type: String, 
     enum: ['PENDING_PAYMENT', 'HELD', 'RELEASED', 'DISPUTED'], 
@@ -38,4 +38,4 @@ const releaseEscrow = async (req, res) => {
   }
 };
 
-module.exports = { createEscrow, releaseEscrow, Escrow };
+export default = { createEscrow, releaseEscrow, Escrow };

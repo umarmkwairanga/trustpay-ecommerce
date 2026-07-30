@@ -6,4 +6,4 @@ const { protect } = import("../middleware/authMiddleware");
 router.get("/:orderId", protect, getOrderMessages);
 router.post("/", protect, sendMessage);
 
-module.exports = router;
+export default router;

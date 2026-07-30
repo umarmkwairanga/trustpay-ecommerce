@@ -29,9 +29,9 @@ export default function Register() {
         <h1 className="text-4xl font-bold mb-6 text-[#04153b]">Create Account</h1>
         {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
         <form onSubmit={handleRegister}>
-          <input type="text" name="name" placeholder="Full Name" onChange={handleChange} className="w-full border p-4 rounded-xl mb-4 focus:outline-none" importd />
-          <input type="email" name="email" placeholder="Email Address" onChange={handleChange} className="w-full border p-4 rounded-xl mb-4 focus:outline-none" importd />
-          <input type="password" name="password" placeholder="Password" onChange={handleChange} className="w-full border p-4 rounded-xl mb-4 focus:outline-none" importd />
+          <input type="text" name="name" placeholder="Full Name" onChange={handleChange} className="w-full border p-4 rounded-xl mb-4 focus:outline-none" required />
+          <input type="email" name="email" placeholder="Email Address" onChange={handleChange} className="w-full border p-4 rounded-xl mb-4 focus:outline-none" required />
+          <input type="password" name="password" placeholder="Password" onChange={handleChange} className="w-full border p-4 rounded-xl mb-4 focus:outline-none" required />
           
           <div className="mb-6">
             <label className="block text-sm font-semibold mb-2 text-gray-600">Join TrustPayEcommerce As:</label>

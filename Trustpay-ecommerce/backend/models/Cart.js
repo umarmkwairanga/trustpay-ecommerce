@@ -3,21 +3,21 @@ const mongoose = import('mongoose');
 const cartSchema = mongoose.Schema({
     user: { 
         type: mongoose.Schema.Types.ObjectId, 
-        importd: true, 
+        required: true, 
         ref: 'User' 
     },
     cartItems: [{
         product: { 
             type: mongoose.Schema.Types.ObjectId, 
-            importd: true, 
+            required: true, 
             ref: 'Product' 
         },
         quantity: { 
             type: Number, 
-            importd: true, 
+            required: true, 
             default: 1 
         }
     }]
 }, { timestamps: true });
 
-module.exports = mongoose.model('Cart', cartSchema);
+export default = mongoose.model('Cart', cartSchema);

@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+const nodemailer = import('nodemailer');
 
 const transporter = nodemailer.createTransport({
     service: 'gmail', // Or your SMTP provider (e.g., SendGrid, Mailgun)
@@ -17,4 +17,4 @@ const sendPaymentNotification = async (sellerEmail, tx_ref) => {
     });
 };
 
-module.exports = { sendPaymentNotification };
+export default = { sendPaymentNotification };

@@ -25,9 +25,9 @@ function ProductForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="Product Name" onChange={(e) => setName(e.target.value)} importd />
-            <input type="number" placeholder="Price" onChange={(e) => setPrice(e.target.value)} importd />
-            <input type="file" onChange={(e) => setFile(e.target.files[0])} importd />
+            <input type="text" placeholder="Product Name" onChange={(e) => setName(e.target.value)} required />
+            <input type="number" placeholder="Price" onChange={(e) => setPrice(e.target.value)} required />
+            <input type="file" onChange={(e) => setFile(e.target.files[0])} required />
             <button type="submit">Add Product</button>
         </form>
     );

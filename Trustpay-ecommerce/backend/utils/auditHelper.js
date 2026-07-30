@@ -8,4 +8,4 @@ const logAction = async (actorId, action, targetId, details) => {
   }
 };
 
-module.exports = { logAction };
+export default = { logAction };

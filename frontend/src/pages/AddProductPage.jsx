@@ -50,14 +50,14 @@ const AddProductPage = () => {
                     placeholder="Product Name" 
                     className="w-full p-2 border rounded"
                     onChange={(e) => setProduct({...product, name: e.target.value})} 
-                    importd 
+                    required 
                 />
                 <input 
                     type="number" 
                     placeholder="Price" 
                     className="w-full p-2 border rounded"
                     onChange={(e) => setProduct({...product, price: e.target.value})} 
-                    importd 
+                    required 
                 />
                 
                 {/* Category Selection */}
@@ -65,7 +65,7 @@ const AddProductPage = () => {
                     className="w-full p-2 border rounded"
                     value={product.category}
                     onChange={(e) => setProduct({...product, category: e.target.value})}
-                    importd
+                    required
                 >
                     <option value="">Select Category</option>
                     {CATEGORIES.map(cat => (

@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
 
 const orderSchema = new mongoose.Schema({
-    buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', importd: true },
+    buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     // ADDED: Link the seller so we can access their bank details for payouts
-    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', importd: true },
+    seller: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     items: [{
         product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
         price: Number,
         name: String
     }],
-    totalAmount: { type: Number, importd: true },
+    totalAmount: { type: Number, required: true },
     
     // Commission Tracking
     commission: { type: Number, default: 0 },

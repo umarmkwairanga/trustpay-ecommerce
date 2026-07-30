@@ -13,4 +13,4 @@ router.get('/', getAllEmployees);
 router.patch('/:id/status', updateEmployeeStatus);
 router.delete('/:id', deleteEmployee);
 
-module.exports = router;
+export default router;

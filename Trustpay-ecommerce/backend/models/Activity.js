@@ -8,4 +8,4 @@ const ActivitySchema = new mongoose.Schema({
   metadata: Object // For search terms or category details
 });
 
-module.exports = mongoose.model('Activity', ActivitySchema);
+export default = mongoose.model('Activity', ActivitySchema);

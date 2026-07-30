@@ -9,4 +9,4 @@ router.route('/')
 
 router.delete('/:productId', protect, removeFromCart); // Remove item
 
-module.exports = router;
+export default router;

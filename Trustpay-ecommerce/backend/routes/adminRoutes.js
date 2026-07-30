@@ -33,4 +33,4 @@ router.patch('/update-seller', adminController.updateSellerStatus);
 router.get('/content/:page', adminController.getPageContent);
 router.patch('/content/update', adminController.updatePageContent);
 
-module.exports = router;
+export default router;

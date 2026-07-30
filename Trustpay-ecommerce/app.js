@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const connectDB = require('./config/db'); // Your database connection
-const productRoutes = require('./routes/productRoutes'); // The new routes
+const connectDB = import('./config/db'); // Your database connection
+const productRoutes = import('./routes/productRoutes'); // The new routes
 
 // Middleware to parse incoming data
 app.use(express.json());

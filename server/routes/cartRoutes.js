@@ -4,7 +4,7 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.use(protect); // All cart routes require login
+router.use(protect); // All cart routes import login
 router.get('/', getCart);
 router.post('/', addToCart);
 

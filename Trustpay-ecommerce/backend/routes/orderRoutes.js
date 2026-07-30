@@ -1,7 +1,7 @@
 import express from 'express';
-import axios from 'axios';
 import Transaction from '../models/Transaction.js'; // Ensure this points to your new Transaction model
 import { protect, restrictTo } from '../middleware/authMiddleware.js';
+import flw from '../services/flutterwave.js'; // Flutterwave SDK import
 import { 
     createOrder, 
     confirmDelivery, 
@@ -14,21 +14,17 @@ const router = express.Router();
 // 1. Create a new order
 router.post('/', protect, createOrder);
 
-// 2. Verify payment (Now updates Transaction to HELD)
+// 2. Verify payment (Now updates Transaction to HELD using Flutterwave SDK)
 router.post('/verify-payment', protect, async (req, res) => {
-    const { reference } = req.body;
+    const { transaction_id } = req.body;
 
     try {
-        const response = await axios.get(`https://api.paystack.co/transaction/verify/${reference}`, {
-            headers: {
-                Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`
-            }
-        });
+        const response = await flw.Transaction.verify({ id: transaction_id });
 
-        if (response.data.data.status === 'success') {
-            // Update the Transaction model to 'HELD' status
+        if (response.data.status === 'successful') {
+            // Update the Transaction model to 'HELD' status using tx_ref
             const updatedTxn = await Transaction.findOneAndUpdate(
-                { reference: reference }, 
+                { reference: response.data.tx_ref }, 
                 { status: 'HELD' },
                 { new: true }
             );
@@ -39,7 +35,7 @@ router.post('/verify-payment', protect, async (req, res) => {
 
             res.status(200).json({ message: "Payment verified, funds HELD in escrow", transaction: updatedTxn });
         } else {
-            res.status(400).json({ message: "Payment not successful on Paystack" });
+            res.status(400).json({ message: "Payment not successful on Flutterwave" });
         }
     } catch (error) {
         res.status(500).json({ message: "Verification server error", error: error.message });
@@ -49,7 +45,6 @@ router.post('/verify-payment', protect, async (req, res) => {
 // 3. Confirm delivery (Triggers funds release from HELD to RELEASED)
 router.put('/:orderId/confirm-delivery', protect, restrictTo('buyer'), async (req, res) => {
     try {
-        // You can link orderId to Transaction reference here
         const txn = await Transaction.findOneAndUpdate(
             { _id: req.params.orderId, status: 'HELD' },
             { status: 'RELEASED' },
@@ -58,7 +53,6 @@ router.put('/:orderId/confirm-delivery', protect, restrictTo('buyer'), async (re
 
         if (!txn) return res.status(400).json({ message: "Cannot release funds: Transaction not HELD or not found" });
 
-        // TODO: Trigger Paystack Transfer API to Seller here
         res.status(200).json({ message: "Delivery confirmed. Funds RELEASED to seller.", transaction: txn });
     } catch (error) {
         res.status(500).json({ message: "Error confirming delivery", error: error.message });

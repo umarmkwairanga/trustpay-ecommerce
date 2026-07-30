@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     console.log('DEBUG: POST /api/categories received:', req.body);
     try {
-        const { name, description, image, inspectionWindow, requiresShippingProof, riskRating, commissionRate } = req.body;
+        const { name, description, image, inspectionWindow, importsShippingProof, riskRating, commissionRate } = req.body;
 
         if (!name) {
             return res.status(400).json({ error: 'Category name is required' });
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
             description,
             image,
             inspectionWindow,
-            requiresShippingProof,
+            importsShippingProof,
             riskRating,
             commissionRate
         });
