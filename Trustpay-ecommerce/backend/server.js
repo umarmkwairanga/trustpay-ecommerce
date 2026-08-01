@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 import { fileURLToPath } from 'url';
 import rateLimit from 'express-rate-limit';
 
-// Import Models - FIXED: Changed '../' to './' to reference the backend folder and matched Git casing
+// Import Models
 import Product from './models/Product.js'; 
 import Transaction from './models/Escrow.js';
 
@@ -17,7 +17,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import ceoRoutes from './routes/ceoRoutes.js';
 import translationRoutes from './routes/translationRoutes.js';
-import livestockRoutes from './routes/livestockRoutes.js'; // NEW: Imported livestock routes
+import livestockRoutes from './routes/livestockRoutes.js'; 
 
 // Import Middleware
 import { protect, authorizeCEO } from './middleware/auth.js';
@@ -85,7 +85,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/ceo', protect, authorizeCEO, ceoRoutes);
 app.use('/api/translation', protect, authorizeCEO, translationRoutes);
-app.use('/api/livestock', livestockRoutes); // NEW: Mounted livestock API endpoints
+app.use('/api/livestock', livestockRoutes); 
 
 app.get('/api/products', async (req, res) => {
     try {
@@ -107,5 +107,11 @@ app.post('/api/products', upload.single('image'), async (req, res) => {
     }
 });
 
-// Export the app for Vercel
+// Port Binding for Render & Export for Vercel
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
 export default app;
