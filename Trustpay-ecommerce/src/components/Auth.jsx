@@ -40,7 +40,7 @@ const Auth = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', fontFamily: 'Arial, sans-serif' }}>
-      <h2>{isLogin ? 'TrustPayEcommerce Login' : 'TrustPayEcommerce Registration'}</h2>
+      <h2>{isLogin ? 'TrustPayEcommerceEcommerce Login' : 'TrustPayEcommerceEcommerce Registration'}</h2>
       <form onSubmit={handleSubmit}>
         {!isLogin && (
           <div style={{ marginBottom: '15px' }}>

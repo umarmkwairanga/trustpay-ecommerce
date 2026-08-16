@@ -18,7 +18,7 @@ const LoginForm = () => {
 
     return (
         <form onSubmit={handleLogin}>
-            <h2>Login to TrustPayEcommerceEcommerce</h2>
+            <h2>Login to TrustPayEcommerceEcommerceEcommerce</h2>
             <input 
                 type="email" placeholder="Email" 
                 onChange={(e) => setCredentials({...credentials, email: e.target.value})} 

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance with your production and development URLs
 const API = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://trustpay-ecommerce-1.onrender.com/api'
+    baseURL: import.meta.env.VITE_API_URL || 'https://TrustPayEcommerce-ecommerce-1.onrender.com/api'
 });
 
 // Request Interceptor: Automatically attach the token to every request

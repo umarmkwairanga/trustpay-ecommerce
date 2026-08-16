@@ -13,14 +13,14 @@ const transporter = nodemailer.createTransport({
 export const sendPaymentNotification = async (sellerEmail, orderId, amount) => {
     try {
         const mailOptions = {
-            from: '"TrustPay Escrow" <no-reply@trustpay.com>',
+            from: '"TrustPayEcommerce Escrow" <no-reply@TrustPayEcommerce.com>',
             to: sellerEmail,
             subject: 'Funds Secured: Escrow Payment Received',
             text: `Hello, your funds of ${amount} for Order #${orderId} have been securely held in escrow. You can now proceed with the delivery.`,
             html: `<p>Hello,</p>
                    <p>Great news! Your funds of <strong>${amount}</strong> for Order <strong>#${orderId}</strong> have been securely held in escrow.</p>
                    <p>You can now proceed with the delivery of your product.</p>
-                   <p>Best regards,<br>TrustPay Team</p>`
+                   <p>Best regards,<br>TrustPayEcommerce Team</p>`
         };
 
         await transporter.sendMail(mailOptions);

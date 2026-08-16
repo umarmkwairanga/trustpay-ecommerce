@@ -102,7 +102,7 @@ export default function MyBookings() {
                   <div className="text-lg font-bold text-[#FF6A00]">
                     ₦{booking.pricingDetails?.totalAmount?.toLocaleString()}
                   </div>
-                  <p className="text-xs text-gray-400">Includes 5% TrustPay Fee</p>
+                  <p className="text-xs text-gray-400">Includes 5% TrustPayEcommerce Fee</p>
                   <span className="inline-block text-xs font-semibold px-2 py-1 bg-gray-100 text-[#0B1B3A] rounded">
                     Escrow: <strong className="uppercase">{booking.escrowStatus}</strong>
                   </span>

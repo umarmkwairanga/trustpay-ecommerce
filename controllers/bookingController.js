@@ -2,7 +2,7 @@ const BookingTransaction = require('../models/BookingTransaction');
 const BookingItem = require('../models/BookingItem');
 const crypto = require('crypto');
 
-// Initiate a booking with TrustPay secure escrow calculation
+// Initiate a booking with TrustPayEcommerce secure escrow calculation
 exports.initiateBooking = async (req, res) => {
   try {
     const { bookingItemId, startDate, endDate, timeSlot, quantity, guestDetails } = req.body;
@@ -13,7 +13,7 @@ exports.initiateBooking = async (req, res) => {
     }
 
     const subtotal = item.pricing.basePrice * (quantity || 1);
-    const platformFee = subtotal * 0.05; // 5% TrustPay platform fee
+    const platformFee = subtotal * 0.05; // 5% TrustPayEcommerce platform fee
     const totalAmount = subtotal + platformFee;
     const bookingReference = `TRX-BOOK-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 

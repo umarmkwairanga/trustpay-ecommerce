@@ -13,7 +13,7 @@ const CartView = () => {
 
   // This function is triggered by FlutterwaveButton after payment success
   const handlePaymentSuccess = () => {
-    alert("Payment Successful! Funds are now securely held in TrustPay escrow.");
+    alert("Payment Successful! Funds are now securely held in TrustPayEcommerce escrow.");
     clearCart();
     navigate('/orders');
   };

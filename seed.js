@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 import User from './models/User.js';
 
-const MONGO_URI = 'mongodb://localhost:27017/trustpay';
+const MONGO_URI = 'mongodb://localhost:27017/TrustPayEcommerce';
 
 const seedAdmin = async () => {
     console.log("Starting seed script...");

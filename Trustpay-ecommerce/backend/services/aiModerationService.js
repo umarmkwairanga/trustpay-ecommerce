@@ -18,7 +18,7 @@ async function evaluateProductWithAI({ productName, productDescription, proposed
   const categoryListString = existingCategories.map(c => `- ${c.name} (ID: ${c._id})`).join('\n');
 
   const systemPrompt = `
-You are an advanced TrustPayEcommerce Marketplace Compliance and Categorization AI agent.
+You are an advanced TrustPayEcommerceEcommerce Marketplace Compliance and Categorization AI agent.
 Your objective is to evaluate whether a seller's product is legal, safe, and appropriate to list, and determine its category.
 
 RULES:

@@ -22,7 +22,7 @@ export const assessFraudRisk = async (req, res, next) => {
     // 3. Decision Gate
     if (score > 70) {
         return res.status(403).json({ 
-            error: "Transaction flagged by TrustPay AI. Please contact support." 
+            error: "Transaction flagged by TrustPayEcommerce AI. Please contact support." 
         });
     }
 

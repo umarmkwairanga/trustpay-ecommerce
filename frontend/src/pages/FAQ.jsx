@@ -7,7 +7,7 @@ const FAQ = () => {
       
       <div className="space-y-6">
         <div>
-          <h3 className="font-bold text-lg text-blue-900">How does TrustPay escrow work?</h3>
+          <h3 className="font-bold text-lg text-blue-900">How does TrustPayEcommerce escrow work?</h3>
           <p className="text-gray-700">When you pay for an order, we hold the funds in a secure vault. We only release the payment to the seller once you have confirmed receipt of your item.</p>
         </div>
 

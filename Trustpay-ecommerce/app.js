@@ -22,5 +22,5 @@ app.use('/api/bookings', bookingInventoryRoutes); // Enables public search at /a
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`TrustPayEcommerce server running on port ${PORT}`);
+    console.log(`TrustPayEcommerceEcommerce server running on port ${PORT}`);
 });

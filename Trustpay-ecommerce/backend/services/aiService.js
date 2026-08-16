@@ -8,7 +8,7 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 exports.evaluateProductListing = async (productData, existingCategories) => {
     try {
         const prompt = `
-        You are an e-commerce platform compliance and categorization AI for TrustPayEcommerce.
+        You are an e-commerce platform compliance and categorization AI for TrustPayEcommerceEcommerce.
         Analyze the following product listing:
         - Name: ${productData.name}
         - Description: ${productData.description}

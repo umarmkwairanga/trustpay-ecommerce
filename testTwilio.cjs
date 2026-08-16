@@ -21,7 +21,7 @@ async function sendTestSMS() {
     try {
         console.log("Attempting to send SMS...");
         const message = await client.messages.create({
-            body: 'TrustPay Test: Recovery successful!',
+            body: 'TrustPayEcommerce Test: Recovery successful!',
             from: phone,
             to: '+23480XXXXXXXXXX' // REPLACE WITH YOUR VERIFIED NUMBER
         });

@@ -28,13 +28,13 @@ const runFinalTest = async () => {
         console.log(`👉 [FORCED MOCK ACTIVE] Simulating test to: ${targetPhoneNumber}...`);
         console.log('\n--- 🛠️ [MOCK SMS DISPATCH] ---');
         console.log(`TO:      ${targetPhoneNumber}`);
-        console.log(`BODY:    Trustpay: Connection verified! 🎉`);
+        console.log(`BODY:    TrustPayEcommerce: Connection verified! 🎉`);
         console.log('-------------------------------\n');
         console.log(`✅ SUCCESS! Message intercepted locally. ID: MOCK_ID_${Date.now()}`);
     } else {
         console.log(`👉 Dispatching live test to: ${targetPhoneNumber}...`);
         try {
-            const result = await sendSMS(targetPhoneNumber, 'Trustpay: Connection verified! 🎉');
+            const result = await sendSMS(targetPhoneNumber, 'TrustPayEcommerce: Connection verified! 🎉');
             if (result.success) {
                 console.log(`\n✅ SUCCESS! Message sent via Twilio. ID: ${result.messageId}`);
             } else {

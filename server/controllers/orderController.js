@@ -20,7 +20,7 @@ export const createOrder = async (req, res) => {
             tx_ref: tx_ref,
             amount: totalAmount,
             currency: "NGN",
-            redirect_url: process.env.PAYMENT_REDIRECT_URL || "https://trustpay.yourdomain.com/success",
+            redirect_url: process.env.PAYMENT_REDIRECT_URL || "https://TrustPayEcommerce.yourdomain.com/success",
             customer: { email: req.user.email, name: req.user.username }
         };
 

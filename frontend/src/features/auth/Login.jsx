@@ -18,7 +18,7 @@ export default function Login() {
         onSubmit={handleLogin} 
         className="bg-white p-8 rounded-lg shadow-md w-96"
       >
-        <h2 className="text-2xl font-bold mb-6">Login to TrustPayEcommerce</h2>
+        <h2 className="text-2xl font-bold mb-6">Login to TrustPayEcommerceEcommerce</h2>
         
         <input
           type="email"

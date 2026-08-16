@@ -59,7 +59,7 @@ export const getCeoBookingKPIs = async (req, res) => {
         const totalBookings = await BookingTransaction.countDocuments();
         const activeProviders = await BusinessProfile.countDocuments({ verificationStatus: 'verified' });
         
-        // Aggregate Gross Merchandise Value (GMV) and TrustPay platform fee revenue from completed/confirmed bookings
+        // Aggregate Gross Merchandise Value (GMV) and TrustPayEcommerce platform fee revenue from completed/confirmed bookings
         const revenueAggregation = await BookingTransaction.aggregate([
             { $match: { paymentStatus: 'success' } },
             { 

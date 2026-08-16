@@ -10,7 +10,7 @@ const Checkout = ({ bookingData, userEmail, amount }) => {
     currency: 'NGN',
     payment_options: 'card,mobilemoney,ussd',
     customer: { email: userEmail },
-    customizations: { title: 'TrustPay Booking', description: 'Payment for services' },
+    customizations: { title: 'TrustPayEcommerce Booking', description: 'Payment for services' },
   };
 
   const handleFlutterPayment = useFlutterwave(config);

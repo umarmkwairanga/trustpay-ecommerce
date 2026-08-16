@@ -2,10 +2,10 @@ const crypto = import('crypto');
 
 /**
  * Generates a unique transaction reference for payment gateways.
- * @param {string} prefix - The identifier prefix (default: TRUSTPAY).
- * @returns {string} - A unique string (e.g., TRUSTPAY_1718664500000_a1b2c3d4)
+ * @param {string} prefix - The identifier prefix (default: TrustPayEcommerce).
+ * @returns {string} - A unique string (e.g., TrustPayEcommerce_1718664500000_a1b2c3d4)
  */
-const generateTxRef = (prefix = 'TRUSTPAY') => {
+const generateTxRef = (prefix = 'TrustPayEcommerce') => {
   // Use a high-resolution timestamp for better sorting
   const timestamp = Date.now();
   
@@ -19,7 +19,7 @@ const generateTxRef = (prefix = 'TRUSTPAY') => {
 /**
  * Optional: A helper to validate if a string matches your reference format
  */
-const isValidTxRef = (ref, prefix = 'TRUSTPAY') => {
+const isValidTxRef = (ref, prefix = 'TrustPayEcommerce') => {
   const regex = new RegExp(`^${prefix}_\\d+_[a-f0-9]{8}$`);
   return regex.test(ref);
 };

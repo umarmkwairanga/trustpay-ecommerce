@@ -7,7 +7,7 @@ export default function Hero() {
         <h1 className="text-6xl font-bold leading-tight">
           Buy & Sell
           <br />
-          With TrustPayEcommerce
+          With TrustPayEcommerceEcommerce
         </h1>
 
         <p className="mt-5 text-xl text-gray-300">

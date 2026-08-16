@@ -12,7 +12,7 @@ const Footer = () => {
         <footer className="bg-gray-900 text-white p-8 mt-10">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
-                    <h3 className="font-bold text-lg">TrustPay</h3>
+                    <h3 className="font-bold text-lg">TrustPayEcommerce</h3>
                     <p>{info.address}</p>
                 </div>
                 <div>
@@ -25,7 +25,7 @@ const Footer = () => {
                     <p>Escrow Inquiries: {info.disputeEmail}</p>
                 </div>
             </div>
-            <p className="text-center mt-8 text-gray-500">© 2026 TrustPay Ecommerce Ltd.</p>
+            <p className="text-center mt-8 text-gray-500">© 2026 TrustPayEcommerce Ecommerce Ltd.</p>
         </footer>
     );
 };

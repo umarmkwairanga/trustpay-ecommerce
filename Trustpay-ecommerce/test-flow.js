@@ -10,7 +10,7 @@ const runCompletedTest = async () => {
     console.log('==================================================');
     
     const targetPhoneNumber = '+2349033489644'; 
-    const testMessage = 'Trustpay: Your backend testing script is working perfectly! 🎉';
+    const testMessage = 'TrustPayEcommerce: Your backend testing script is working perfectly! 🎉';
 
     console.log(`Sending to: ${targetPhoneNumber}...`);
     

@@ -21,7 +21,7 @@ async function runStandaloneTest() {
     console.log("Testing authentication directly...");
     try {
         const message = await client.messages.create({
-            body: 'TrustPay Test: Direct authentication successful!',
+            body: 'TrustPayEcommerce Test: Direct authentication successful!',
             from: fromNumber,
             to: '+2349033489644' // Your verified number updated here
         });

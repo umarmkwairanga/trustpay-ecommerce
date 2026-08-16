@@ -21,7 +21,7 @@ export const generateProductDescription = async (details) => {
         const response = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [
-                { role: "system", content: "You are a world-class ecommerce copywriter for TrustPayEcommerce. You write high-converting, professional, and SEO-friendly descriptions." },
+                { role: "system", content: "You are a world-class ecommerce copywriter for TrustPayEcommerceEcommerce. You write high-converting, professional, and SEO-friendly descriptions." },
                 { 
                     role: "user", 
                     content: `Write a compelling product description for: ${name}. 
@@ -47,7 +47,7 @@ export const analyzeFraudRisk = async (orderData) => {
         const response = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [
-                { role: "system", content: "You are a TrustPayEcommerce fraud detection expert. Analyze the provided order data and return a JSON object with a 'riskScore' (1-100) and a 'reasoning' string." },
+                { role: "system", content: "You are a TrustPayEcommerceEcommerce fraud detection expert. Analyze the provided order data and return a JSON object with a 'riskScore' (1-100) and a 'reasoning' string." },
                 { role: "user", content: `Analyze this order for potential fraud: ${JSON.stringify(orderData)}` }
             ],
             response_format: { type: "json_object" }

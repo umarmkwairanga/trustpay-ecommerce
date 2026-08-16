@@ -25,7 +25,7 @@ const app = express();
 app.use(cors({
     origin: [
         process.env.CLIENT_URL,
-        'https://trustpay-ecommerce.vercel.app',
+        'https://TrustPayEcommerce-ecommerce.vercel.app',
         'http://localhost:5173'
     ].filter(Boolean),
     credentials: true
@@ -52,10 +52,10 @@ app.use('/api/provider/bookings', providerBookingRoutes);   // Provider booking 
 app.use('/api/admin', adminCeoBookingRoutes);               // Admin provider verification
 app.use('/api/ceo', adminCeoBookingRoutes);                 // CEO platform KPIs
 
-app.get('/', (req, res) => res.send('TrustPay API is running...'));
+app.get('/', (req, res) => res.send('TrustPayEcommerce API is running...'));
 
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`TrustPayEcommerce server running on port ${PORT}`);
+    console.log(`TrustPayEcommerceEcommerce server running on port ${PORT}`);
 });

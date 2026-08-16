@@ -289,7 +289,7 @@ exports.resolveAiReview = async (req, res) => {
       await product.save();
 
       auditLog.decision = 'REJECTED';
-      auditLog.reason = 'Manually rejected by TrustPay Administrator.';
+      auditLog.reason = 'Manually rejected by TrustPayEcommerce Administrator.';
       await auditLog.save();
 
       await logAction(req.user._id, 'REJECT_AI_PRODUCT_REVIEW', auditLog.productId, { action: 'REJECT' });
@@ -344,7 +344,7 @@ exports.resolveAiReview = async (req, res) => {
 
       auditLog.decision = 'APPROVED_NEW_CATEGORY';
       auditLog.finalCategoryId = validCategory._id;
-      auditLog.reason = 'Manually approved and categorized by TrustPay Administrator.';
+      auditLog.reason = 'Manually approved and categorized by TrustPayEcommerce Administrator.';
       await auditLog.save();
 
       await logAction(req.user._id, 'APPROVE_AI_PRODUCT_REVIEW', auditLog.productId, { categoryId: targetCatId });

@@ -28,7 +28,7 @@ export const register = async (req, res) => {
 
         // 4. Send the welcome SMS notification
         if (formattedPhone) {
-            const smsMessage = `Welcome to Trustpay, ${username}! Your register was successful. 🚀`;
+            const smsMessage = `Welcome to TrustPayEcommerce, ${username}! Your register was successful. 🚀`;
             const smsResult = await sendSMS(formattedPhone, smsMessage);
             
             if (!smsResult.success) {

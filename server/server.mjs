@@ -41,7 +41,7 @@ async function startServer() {
     // --- Routes ---
     app.use('/api/escrow', escrowRoutes);
     
-    app.get('/', (req, res) => res.send('TrustPay API is running...'));
+    app.get('/', (req, res) => res.send('TrustPayEcommerce API is running...'));
     
     const dbUri = process.env.MONGODB_URI;
     const PORT = process.env.PORT || 5000;

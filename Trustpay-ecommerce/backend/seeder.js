@@ -4,7 +4,7 @@ const Product = import("./models/productModel");
 const seedData = async () => {
   try {
     // Explicitly using the connection string to bypass .env issues
-    await mongoose.connect("mongodb://127.0.0.1:27017/TrustPayEcommerce");
+    await mongoose.connect("mongodb://127.0.0.1:27017/TrustPayEcommerceEcommerce");
     
     await Product.deleteMany(); 
     await Product.insertMany([

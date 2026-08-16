@@ -84,7 +84,7 @@ export default function AdminCeoDashboard() {
               <h2 className="text-2xl font-bold text-[#0B1B3A] mt-2">₦{kpis.totalGMV?.toLocaleString()}</h2>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <span className="text-xs uppercase font-semibold text-gray-400">TrustPay Revenue (5%)</span>
+              <span className="text-xs uppercase font-semibold text-gray-400">TrustPayEcommerce Revenue (5%)</span>
               <h2 className="text-2xl font-bold text-[#1DBF73] mt-2">₦{kpis.platformRevenue?.toLocaleString()}</h2>
             </div>
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">

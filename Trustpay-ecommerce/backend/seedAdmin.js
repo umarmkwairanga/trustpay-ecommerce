@@ -13,7 +13,7 @@ async function seedAdmin() {
 
         const adminData = {
             name: 'Admin User',
-            email: 'admin@TrustPayEcommerce.com',
+            email: 'admin@TrustPayEcommerceEcommerce.com',
             password: 'StrongPassword123!',
             role: 'admin'
         };

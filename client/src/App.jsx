@@ -10,7 +10,7 @@ function App() {
           {/* Main landing page */}
           <Route path="/" element={
             <div className="flex items-center justify-center min-h-screen">
-              <h1 className="text-4xl font-bold text-blue-600">TrustPay Portal</h1>
+              <h1 className="text-4xl font-bold text-blue-600">TrustPayEcommerce Portal</h1>
             </div>
           } />
           

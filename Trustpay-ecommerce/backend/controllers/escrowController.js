@@ -18,7 +18,7 @@ export const createEscrow = async (req, res) => {
         const { orderId, productId, buyerId, sellerId, amount } = req.body;
         
         // Generate a unique transaction reference for Flutterwave
-        const tx_ref = generateTxRef('TRUSTPAY');
+        const tx_ref = generateTxRef('TrustPayEcommerce');
 
         const newEscrow = await Escrow.create({ 
             orderId, 
@@ -38,7 +38,7 @@ export const createEscrow = async (req, res) => {
             const formattedPhone = formatPhoneNumber(buyer.phoneNumber);
             await sendSMS(
                 formattedPhone, 
-                `Trustpay: Your escrow order for ₦${amount} has been initialized. Please complete your payment. Reference: ${tx_ref}`
+                `TrustPayEcommerce: Your escrow order for ₦${amount} has been initialized. Please complete your payment. Reference: ${tx_ref}`
             );
         }
 
@@ -102,7 +102,7 @@ export const releaseFunds = async (req, res) => {
             const formattedPhone = formatPhoneNumber(seller.phoneNumber);
             await sendSMS(
                 formattedPhone, 
-                `Trustpay Escrow Alert: Your escrow funds of ₦${escrow.amount} have been successfully released to your wallet! 🚀`
+                `TrustPayEcommerce Escrow Alert: Your escrow funds of ₦${escrow.amount} have been successfully released to your wallet! 🚀`
             );
         }
 

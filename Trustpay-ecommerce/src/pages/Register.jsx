@@ -34,7 +34,7 @@ export default function Register() {
           <input type="password" name="password" placeholder="Password" onChange={handleChange} className="w-full border p-4 rounded-xl mb-4 focus:outline-none" required />
           
           <div className="mb-6">
-            <label className="block text-sm font-semibold mb-2 text-gray-600">Join TrustPayEcommerce As:</label>
+            <label className="block text-sm font-semibold mb-2 text-gray-600">Join TrustPayEcommerceEcommerce As:</label>
             <select name="role" onChange={handleChange} className="w-full border p-4 rounded-xl bg-white focus:outline-none">
               <option value="buyer">Buyer (Shop Safely via Escrow)</option>
               <option value="seller">Seller (List Products & Earn)</option>

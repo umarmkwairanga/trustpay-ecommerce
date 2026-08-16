@@ -14,7 +14,7 @@ const orderSchema = new mongoose.Schema({
     // Commission Tracking
     commission: { type: Number, default: 0 },
     
-    // TrustPayEcommerce Statuses
+    // TrustPayEcommerceEcommerce Statuses
     status: { 
         type: String, 
         enum: ['pending', 'paid', 'flagged', 'in-escrow', 'shipped', 'delivered', 'completed', 'disputed'],

@@ -15,7 +15,7 @@ const Checkout = ({ amount, buyerEmail, buyerName, txRef }) => {
       name: buyerName,
     },
     customizations: {
-      title: 'TrustPay Escrow',
+      title: 'TrustPayEcommerce Escrow',
       description: 'Secure payment for your transaction',
       logo: 'https://your-logo-url.png',
     },

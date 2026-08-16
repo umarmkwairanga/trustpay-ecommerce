@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../services/api';
 
 export default function BookingSearch() {
   const [items, setItems] = useState([]);
@@ -18,11 +18,13 @@ export default function BookingSearch() {
   const fetchInventory = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/bookings/search', {
+      const response = await api.get('/api/customer/bookings/search', {
         params: { category, keyword: searchQuery }
       });
       if (response.data.success) {
-        setItems(response.data.items);
+        setItems(response.data.items || response.data.results || []);
+      } else if (Array.isArray(response.data)) {
+        setItems(response.data);
       }
     } catch (err) {
       console.error('Failed to fetch search results', err);
@@ -60,13 +62,10 @@ export default function BookingSearch() {
 
     setBookingLoadingId(item._id);
     try {
-      const token = localStorage.getItem('token');
-      const response = await axios.post('/api/bookings/initiate', {
+      const response = await api.post('/api/customer/bookings/create', {
         bookingItemId: item._id,
         schedule: { startDate },
         pricingDetails: { guestsCount: Number(guests) }
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
       });
 
       if (response.data.success) {

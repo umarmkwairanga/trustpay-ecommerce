@@ -21,7 +21,7 @@ exports.processPayout = async (req, res) => {
       account_bank: withdrawal.bankCode, 
       account_number: withdrawal.accountNumber,
       amount: withdrawal.amount,
-      narration: `Payout for TrustPay User: ${withdrawal.userId.email}`,
+      narration: `Payout for TrustPayEcommerce User: ${withdrawal.userId.email}`,
       currency: "NGN",
       reference: `PAYOUT_${withdrawal._id}`, // Ensures unique tracking
     };

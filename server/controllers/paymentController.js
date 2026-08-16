@@ -44,7 +44,7 @@ export const createOrder = async (req, res) => {
             metadata: { orderId }
         }], { session });
 
-        // 3. Initialize corresponding Escrow record (TrustPay Core System)
+        // 3. Initialize corresponding Escrow record (TrustPayEcommerce Core System)
         await Escrow.create([{
             buyer: buyerId,
             seller: sellerId || items[0].seller,

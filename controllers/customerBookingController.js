@@ -2,7 +2,7 @@ import BookingTransaction from '../models/BookingTransaction.js';
 import BookingItem from '../models/BookingItem.js';
 import crypto from 'crypto';
 
-// @desc    Initiate a booking & calculate TrustPay escrow/platform fees
+// @desc    Initiate a booking & calculate TrustPayEcommerce escrow/platform fees
 // @route   POST /api/bookings/initiate
 // @access  Private (Buyer / Customer)
 export const initiateBooking = async (req, res) => {
@@ -15,10 +15,10 @@ export const initiateBooking = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Bookable item not found or currently unavailable.' });
         }
 
-        // 2. Calculate pricing & TrustPay 5% platform fee
+        // 2. Calculate pricing & TrustPayEcommerce 5% platform fee
         const qty = quantity || 1;
         const subtotal = item.pricing.basePrice * qty;
-        const platformFee = subtotal * 0.05; // 5% TrustPay platform fee
+        const platformFee = subtotal * 0.05; // 5% TrustPayEcommerce platform fee
         const totalAmount = subtotal + platformFee;
 
         // 3. Generate unique transaction reference for Flutterwave

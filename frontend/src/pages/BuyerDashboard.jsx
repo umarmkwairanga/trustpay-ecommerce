@@ -24,7 +24,7 @@ const BuyerDashboard = () => {
             
             <section className="mt-6 card">
                 <h2 className="text-xl" style={{ color: '#001F5B', marginBottom: '15px' }}>
-                    My TrustPayEcommerce Protected Orders
+                    My TrustPayEcommerceEcommerce Protected Orders
                 </h2>
                 
                 {/* 

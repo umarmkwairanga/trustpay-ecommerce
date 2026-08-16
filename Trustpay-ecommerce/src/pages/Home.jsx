@@ -34,7 +34,7 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-[#04153b] mt-8 mb-4">Trending Escrow Listings</h2>
           
           {loading ? (
-            <p className="text-gray-500 font-medium">Loading TrustPayEcommerce Marketplace Catalogue...</p>
+            <p className="text-gray-500 font-medium">Loading TrustPayEcommerceEcommerce Marketplace Catalogue...</p>
           ) : products.length === 0 ? (
             <div className="bg-white p-8 rounded-xl text-center shadow">
               <p className="text-gray-500">No active products found in the database.</p>

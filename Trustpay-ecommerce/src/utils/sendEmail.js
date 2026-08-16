@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async (to, subject, text) => {
     try {
         const info = await transporter.sendMail({
-            from: '"TrustPay Support" <support@trustpay.com>',
+            from: '"TrustPayEcommerce Support" <support@TrustPayEcommerce.com>',
             to,
             subject,
             text

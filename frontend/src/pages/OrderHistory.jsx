@@ -43,7 +43,7 @@ const OrderHistory = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <h2 className="text-3xl font-bold mb-6">My TrustPayEcommerce Orders</h2>
+            <h2 className="text-3xl font-bold mb-6">My TrustPayEcommerceEcommerce Orders</h2>
             {loading ? <p>Loading...</p> : (
                 <div className="grid gap-6">
                     {orders.map((order) => (

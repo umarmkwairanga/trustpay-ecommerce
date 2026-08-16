@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrustPayEcommerce Marketplace</title>
+    <title>TrustPayEcommerceEcommerce Marketplace</title>
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; }
@@ -14,14 +14,14 @@
     </style>
 </head>
 <body>
-    <h1>TrustPayEcommerce Market</h1>
+    <h1>TrustPayEcommerceEcommerce Market</h1>
     <div id="productGrid" class="grid">Loading marketplace...</div>
 
     <script>
         async function loadProducts() {
             try {
                 // FIXED: Now pointing to your working Render backend
-                const res = await fetch('https://trustpay-ecommerce.onrender.com/api/products');
+                const res = await fetch('https://TrustPayEcommerce-ecommerce.onrender.com/api/products');
                 
                 if (!res.ok) throw new Error('Failed to fetch');
                 

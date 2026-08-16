@@ -126,7 +126,7 @@ const AddProductForm = () => {
         {submissionStatus === 'approved_new' && <div className="alert alert-success">✓ Product approved<br/>✓ New category created</div>}
         {submissionStatus === 'approved_existing' && <div className="alert alert-success">✓ Existing category selected & Product approved</div>}
         {submissionStatus === 'rejected' && <div className="alert alert-danger">✕ This product cannot be listed.</div>}
-        {submissionStatus === 'review_required' && <div className="alert alert-warning">⚠ This product has been sent for TrustPay Admin review.</div>}
+        {submissionStatus === 'review_required' && <div className="alert alert-warning">⚠ This product has been sent for TrustPayEcommerce Admin review.</div>}
         {submissionStatus === 'error' && <div className="alert alert-danger">✕ An error occurred while submitting your product.</div>}
 
         <button type="submit" className="btn btn-primary mt-3">Submit Product</button>

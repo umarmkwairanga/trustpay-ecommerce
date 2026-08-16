@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({
     origin: [
         process.env.CLIENT_URL,
-        'https://trustpay-ecommerce.vercel.app',
+        'https://TrustPayEcommerce-ecommerce.vercel.app',
         'http://localhost:5173'
     ].filter(Boolean),
     credentials: true
@@ -26,7 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/advertisements', advertisementRoutes);
 
-app.get('/', (req, res) => res.send('TrustPay API is running...'));
+app.get('/', (req, res) => res.send('TrustPayEcommerce API is running...'));
 
 // Connect DB
 mongoose.connect(process.env.MONGODB_URI)

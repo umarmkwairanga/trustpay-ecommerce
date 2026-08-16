@@ -21,7 +21,7 @@ exports.createEmployee = async (req, res) => {
     // Send credentials via email
     await transporter.sendMail({
       to: newEmployee.email,
-      subject: "Welcome to TrustPayEcommerceEcommerce - Your Account Details",
+      subject: "Welcome to TrustPayEcommerceEcommerceEcommerce - Your Account Details",
       html: `<p>Hello ${fullName},</p>
              <p>Your account has been created. Your temporary password is: <strong>${tempPassword}</strong></p>
              <p>You will be required to change this password upon your first login.</p>`

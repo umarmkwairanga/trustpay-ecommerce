@@ -83,7 +83,7 @@ export const addProduct = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 decision: 'REJECTED',
-                message: "This product cannot be listed on TrustPayEcommerce."
+                message: "This product cannot be listed on TrustPayEcommerceEcommerce."
             });
         }
 
@@ -115,7 +115,7 @@ export const addProduct = async (req, res) => {
             return res.status(202).json({
                 success: true,
                 decision: 'AI_REVIEW_REQUIRED',
-                message: "This product has been sent for TrustPay Admin review."
+                message: "This product has been sent for TrustPayEcommerce Admin review."
             });
         }
 

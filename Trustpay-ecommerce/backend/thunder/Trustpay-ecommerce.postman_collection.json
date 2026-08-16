@@ -1,7 +1,7 @@
 {
   "info": {
-    "_postman_id": "TrustPayEcommerce-ecommerce-collection",
-    "name": "TrustPayEcommerce-ecommerce (Thunder Client import)",
+    "_postman_id": "TrustPayEcommerceEcommerce-ecommerce-collection",
+    "name": "TrustPayEcommerceEcommerce-ecommerce (Thunder Client import)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [

@@ -11,7 +11,7 @@ export default function ProductCard({ id, image, title, price }) {
     
     // Safety check: If not logged in, boot them to login
     if (!token) {
-      alert("Please login or create an account to secure items via TrustPayEcommerce Escrow.");
+      alert("Please login or create an account to secure items via TrustPayEcommerceEcommerce Escrow.");
       return navigate("/login");
     }
 

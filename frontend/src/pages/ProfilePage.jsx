@@ -27,7 +27,7 @@ const ProfilePage = () => {
                 
                 <div className="border-t pt-4">
                     <h4 className="font-bold mb-2">Account Settings</h4>
-                    <p className="text-gray-600 mb-4">Manage your TrustPayEcommerce account details and security preferences here.</p>
+                    <p className="text-gray-600 mb-4">Manage your TrustPayEcommerceEcommerce account details and security preferences here.</p>
                     <button 
                         onClick={handleLogout}
                         className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"

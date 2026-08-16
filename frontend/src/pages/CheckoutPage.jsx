@@ -27,10 +27,10 @@ const CheckoutPage = ({ totalAmount, email, items }) => {
     };
 
     return (
-        // Applied 'card' class for the professional TrustPayEcommerceEcommerce look
+        // Applied 'card' class for the professional TrustPayEcommerceEcommerceEcommerce look
         <div className="card">
             <h3 className="text-xl font-bold mb-2" style={{ color: '#001F5B' }}>Checkout</h3>
-            <p className="mb-4 text-sm text-gray-600">Secure payment via TrustPayEcommerceEcommerce</p>
+            <p className="mb-4 text-sm text-gray-600">Secure payment via TrustPayEcommerceEcommerceEcommerce</p>
             <p className="mb-4">Total Amount: <strong>₦{totalAmount.toLocaleString()}</strong></p>
             
             {/* Using btn-primary for Orange CTA branding */}

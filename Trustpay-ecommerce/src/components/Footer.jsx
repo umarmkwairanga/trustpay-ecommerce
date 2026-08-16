@@ -9,7 +9,7 @@ const Footer = () => {
         {/* Support Section */}
         <div>
           <h3 className="text-lg font-bold mb-4">Support</h3>
-          <p>Email: support@trustpay.com</p>
+          <p>Email: support@TrustPayEcommerce.com</p>
           <p>Phone: +234 123 456 7890</p>
         </div>
 
@@ -25,7 +25,7 @@ const Footer = () => {
 
         {/* Company Info */}
         <div>
-          <h3 className="text-lg font-bold mb-4">TrustPay Ecommerce</h3>
+          <h3 className="text-lg font-bold mb-4">TrustPayEcommerce Ecommerce</h3>
           <p className="text-sm text-gray-400">
             Secure, reliable, and AI-powered e-commerce for everyone.
           </p>
@@ -33,7 +33,7 @@ const Footer = () => {
       </div>
       
       <div className="text-center mt-8 border-t border-gray-800 pt-6 text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} TrustPay Ecommerce Ltd. All rights reserved.
+        &copy; {new Date().getFullYear()} TrustPayEcommerce Ecommerce Ltd. All rights reserved.
       </div>
     </footer>
   );

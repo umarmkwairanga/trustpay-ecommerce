@@ -10,7 +10,7 @@ const transporter = nodemailer.createTransport({
 
 const sendPaymentNotification = async (sellerEmail, tx_ref) => {
     await transporter.sendMail({
-        from: '"TrustPay" <noreply@trustpay.com>',
+        from: '"TrustPayEcommerce" <noreply@TrustPayEcommerce.com>',
         to: sellerEmail,
         subject: 'Payment Received!',
         text: `Great news! Payment for transaction ${tx_ref} has been funded and is now in Escrow.`

@@ -14,7 +14,7 @@ const Navbar = () => {
     return (
         <nav className="bg-gray-800 p-4 text-white flex justify-between items-center shadow-lg">
             <div className="flex gap-6">
-                <Link to="/" className="font-bold text-xl">TrustPayEcommerceEcommerce</Link>
+                <Link to="/" className="font-bold text-xl">TrustPayEcommerceEcommerceEcommerce</Link>
                 
                 {/* Role-Based Links */}
                 {isLoggedIn && (

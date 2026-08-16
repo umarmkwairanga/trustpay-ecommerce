@@ -5,7 +5,7 @@ const LandingPage = () => {
     <div className="landing-container" style={{ fontFamily: 'sans-serif', padding: '2rem' }}>
       {/* Hero Section */}
       <header style={{ textAlign: 'center', margin: '4rem 0' }}>
-        <h1 style={{ fontSize: '3rem', color: '#2563eb' }}>TrustPay</h1>
+        <h1 style={{ fontSize: '3rem', color: '#2563eb' }}>TrustPayEcommerce</h1>
         <p style={{ fontSize: '1.25rem', color: '#4b5563' }}>
           Secure, transparent escrow services for the Nigerian marketplace.
         </p>
@@ -28,7 +28,7 @@ const LandingPage = () => {
 
       {/* Footer */}
       <footer style={{ marginTop: '4rem', textAlign: 'center', color: '#9ca3af' }}>
-        <p>© 2026 TrustPay. Building the future of secure commerce.</p>
+        <p>© 2026 TrustPayEcommerce. Building the future of secure commerce.</p>
       </footer>
     </div>
   );

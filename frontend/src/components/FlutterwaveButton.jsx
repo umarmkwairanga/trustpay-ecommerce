@@ -10,7 +10,7 @@ const FlutterwaveButton = ({ amount, email, name, onSuccess, onClose }) => {
         currency: 'NGN',
         payment_options: 'card,banktransfer,ussd',
         customer: { email, name },
-        customizations: { title: 'TrustPay', description: 'Payment for goods' },
+        customizations: { title: 'TrustPayEcommerce', description: 'Payment for goods' },
     };
 
     const handleFlutterPayment = useFlutterwave(config);

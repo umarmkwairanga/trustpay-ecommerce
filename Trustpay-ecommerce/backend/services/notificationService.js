@@ -6,7 +6,7 @@ const client = new twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUT
 export const sendOrderNotification = async (phoneNumber, orderId, status) => {
   try {
     const message = await client.messages.create({
-      body: `TrustPay Update: Your order #${orderId} is now ${status}. Thank you for using TrustPay!`,
+      body: `TrustPayEcommerce Update: Your order #${orderId} is now ${status}. Thank you for using TrustPayEcommerce!`,
       from: process.env.TWILIO_PHONE_NUMBER,
       to: phoneNumber 
     });
