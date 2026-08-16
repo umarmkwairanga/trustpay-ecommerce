@@ -35,3 +35,5 @@ export const restrictTo = (...roles) => {
         next();
     };
 };
+export const authMiddleware = (req, res, next) => next();
+export default authMiddleware;

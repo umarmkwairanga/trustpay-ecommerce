@@ -1,14 +1,21 @@
-import 'dotenv/config';
 import express from 'express';
+import dotenv from 'dotenv';
 import cors from 'cors';
-import mongoose from 'mongoose';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 
 import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import escrowRoutes from './routes/escrowRoutes.js';
 import advertisementRoutes from './routes/advertisementRoutes.js';
+
+import bookingInventoryRoutes from './routes/bookingInventoryRoutes.js';
+import customerBookingRoutes from './routes/customerBookingRoutes.js';
+import providerBookingRoutes from './routes/providerBookingRoutes.js';
+import adminCeoBookingRoutes from './routes/adminCeoBookingRoutes.js';
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,21 +35,32 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
+// Connect directly to MongoDB
+const uri = process.env.MONGODB_URI || process.env.MONGO_URI;
+mongoose.connect(uri)
+    .then((conn) => console.log(`MongoDB Connected: ${conn.connection.host}`))
+    .catch((error) => {
+        console.error(`Error: ${error.message}`);
+        process.exit(1);
+    });
+
+// Register application routes
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/escrow', escrowRoutes);
 app.use('/api/advertisements', advertisementRoutes);
 
+// Booking, Inventory, Provider, Admin & CEO Routes
+app.use('/api/business/inventory', bookingInventoryRoutes);
+app.use('/api/bookings', bookingInventoryRoutes);           
+app.use('/api/bookings', customerBookingRoutes);            
+app.use('/api/provider/bookings', providerBookingRoutes);   
+app.use('/api/admin', adminCeoBookingRoutes);               
+app.use('/api/ceo', adminCeoBookingRoutes);                 
+
 app.get('/', (req, res) => res.send('TrustPay API is running...'));
 
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB successfully"))
-  .catch(err => console.error("DB Error:", err));
-
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`TrustPayEcommerce server running on port ${PORT}`);
 });
-
-export default app;

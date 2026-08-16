@@ -1,89 +1,61 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const mongoose = require('mongoose');
-const rateLimit = require('express-rate-limit');
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import connectDB from './config/db.js';
 
-// Import Models
-const Transaction = require('./models/Escrow.js');
+import productRoutes from './routes/productRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import escrowRoutes from './routes/escrowRoutes.js';
+import advertisementRoutes from './routes/advertisementRoutes.js';
 
-// Import Routes
-const productRoutes = require('./routes/productRoutes.js');
-const orderRoutes = require('./routes/orderRoutes.js');
-const authRoutes = require('./routes/authRoutes.js');
-const ceoRoutes = require('./routes/ceoRoutes.js');
-const translationRoutes = require('./routes/translationRoutes.js');
-const livestockRoutes = require('./routes/livestockRoutes.js'); 
-const advertisementRoutes = require('./routes/advertisementRoutes.js');
+import bookingInventoryRoutes from './routes/bookingInventoryRoutes.js';
+import customerBookingRoutes from './routes/customerBookingRoutes.js';
+import providerBookingRoutes from './routes/providerBookingRoutes.js';
+import adminCeoBookingRoutes from './routes/adminCeoBookingRoutes.js';
 
-// Import Middleware
-const { protect, authorizeCEO } = require('./middleware/auth.js');
+dotenv.config();
 
-// Import Background Workers
-const checkAndExpireAds = require('./services/adExpirationCron.js');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => {
-      console.log("Connected to MongoDB successfully");
-      setInterval(checkAndExpireAds, 60 * 60 * 1000);
-  })
-  .catch((err) => console.error("MongoDB connection error:", err.message));
+app.use(cors({
+    origin: [
+        process.env.CLIENT_URL,
+        'https://trustpay-ecommerce.vercel.app',
+        'http://localhost:5173'
+    ].filter(Boolean),
+    credentials: true
+}));
 
-// Middleware Setup
-const uploadDir = 'uploads';
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-
-const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, 
-    max: 100, 
-    message: "Too many requests, please try again later."
-});
-
-const allowedOrigins = [
-    process.env.CLIENT_URL,
-    'https://trustpay-ecommerce.vercel.app',
-    'http://localhost:5173'
-].filter(Boolean);
-
-app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// --- FLUTTERWAVE WEBHOOK ---
-app.post('/api/flutterwave/webhook', async (req, res) => {
-    try {
-        const signature = req.headers['verif-hash'];
-        if (!signature || signature !== process.env.FLW_SECRET_HASH) return res.status(401).send('Unauthorized');
-        
-        const payload = req.body;
-        if (payload.event === 'charge.completed' && payload.data.status === 'successful') {
-            await Transaction.findOneAndUpdate({ reference: payload.data.tx_ref }, { status: 'HELD' });
-        }
-        res.sendStatus(200);
-    } catch (error) {
-        res.sendStatus(500);
-    }
-});
+// Connect to MongoDB
+connectDB();
 
-// --- API ROUTES ---
-app.use('/api', apiLimiter);
+// Register application routes
 app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/ceo', protect, authorizeCEO, ceoRoutes);
-app.use('/api/translation', protect, authorizeCEO, translationRoutes);
-app.use('/api/livestock', livestockRoutes); 
+app.use('/api/escrow', escrowRoutes);
 app.use('/api/advertisements', advertisementRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// Booking, Inventory, Provider, Admin & CEO Routes
+app.use('/api/business/inventory', bookingInventoryRoutes);
+app.use('/api/bookings', bookingInventoryRoutes);           // Public search & inventory lookups
+app.use('/api/bookings', customerBookingRoutes);            // Customer booking initiation, history & fulfillment
+app.use('/api/provider/bookings', providerBookingRoutes);   // Provider booking management
+app.use('/api/admin', adminCeoBookingRoutes);               // Admin provider verification
+app.use('/api/ceo', adminCeoBookingRoutes);                 // CEO platform KPIs
 
-module.exports = app;
+app.get('/', (req, res) => res.send('TrustPay API is running...'));
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`TrustPayEcommerce server running on port ${PORT}`);
+});

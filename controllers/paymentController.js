@@ -1,4 +1,5 @@
 import Transaction from '../models/Escrow.js';
+import BookingTransaction from '../models/BookingTransaction.js';
 
 export const handleWebhook = async (req, res) => {
     try {
@@ -13,17 +14,39 @@ export const handleWebhook = async (req, res) => {
 
         // Check if the charge was successful
         if (event === 'charge.completed' && data.status === 'successful') {
-            // Update the transaction status in your database
-            await Transaction.findOneAndUpdate(
-                { reference: data.tx_ref }, 
-                { status: 'HELD' }
+            const txRef = data.tx_ref;
+
+            // 1. Try updating a standard product/escrow transaction first
+            let updatedTransaction = await Transaction.findOneAndUpdate(
+                { reference: txRef }, 
+                { status: 'HELD', paymentReference: data.id }
             );
-            console.log(`Transaction ${data.tx_ref} moved to Escrow.`);
+
+            if (updatedTransaction) {
+                console.log(`Product Transaction ${txRef} moved to Escrow.`);
+            } else {
+                // 2. If not found in standard transactions, check BookingTransactions
+                let updatedBooking = await BookingTransaction.findOneAndUpdate(
+                    { bookingReference: txRef },
+                    { 
+                        paymentStatus: 'success', 
+                        status: 'Confirmed', 
+                        paymentReference: data.id,
+                        escrowStatus: 'held'
+                    }
+                );
+
+                if (updatedBooking) {
+                    console.log(`Booking Transaction ${txRef} confirmed and funds secured in escrow.`);
+                } else {
+                    console.warn(`Webhook received for unknown reference: ${txRef}`);
+                }
+            }
         }
 
-        res.sendStatus(200);
+        return res.sendStatus(200);
     } catch (error) {
         console.error("Webhook Error:", error.message);
-        res.status(500).json({ message: "Webhook processing failed" });
+        return res.status(500).json({ message: "Webhook processing failed" });
     }
 };
