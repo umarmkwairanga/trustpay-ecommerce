@@ -1,11 +1,47 @@
-const mongoose = import('mongoose');
+import mongoose from 'mongoose';
 
-const auditLogSchema = new mongoose.Schema({
-  actor: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  action: { type: String, required: true }, // e.g., 'RESOLVE_DISPUTE', 'UPDATE_SELLER_STATUS'
-  targetId: { type: mongoose.Schema.Types.ObjectId, required: true },
-  details: { type: Object },
-  timestamp: { type: Date, default: Date.now }
+const aiAuditLogSchema = new mongoose.Schema({
+  sellerId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    required: true 
+  },
+  productId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Product', 
+    required: false 
+  },
+  proposedCategory: { 
+    type: String, 
+    required: true,
+    trim: true
+  },
+  decision: { 
+    type: String, 
+    enum: ['APPROVED_NEW_CATEGORY', 'USE_EXISTING_CATEGORY', 'REJECTED', 'AI_REVIEW_REQUIRED'],
+    required: true 
+  },
+  confidence: { 
+    type: Number, 
+    required: true 
+  },
+  existingCategoryId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Category', 
+    default: null 
+  },
+  finalCategoryId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Category', 
+    default: null 
+  },
+  reason: { 
+    type: String, 
+    required: true 
+  }
+}, { 
+  timestamps: true 
 });
 
-export default = mongoose.model('AuditLog', auditLogSchema);
+const AiAuditLog = mongoose.model('AiAuditLog', aiAuditLogSchema);
+export default AiAuditLog;

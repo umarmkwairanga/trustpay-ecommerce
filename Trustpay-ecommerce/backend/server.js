@@ -1,46 +1,43 @@
-import 'dotenv/config';
-import express from 'express';
-import cors from 'cors';
-import multer from 'multer';
-import path from 'path';
-import fs from 'fs';
-import mongoose from 'mongoose';
-import { fileURLToPath } from 'url';
-import rateLimit from 'express-rate-limit';
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
 
 // Import Models
-import Product from './models/Product.js'; 
-import Transaction from './models/Escrow.js';
+const Transaction = require('./models/Escrow.js');
 
 // Import Routes
-import orderRoutes from './routes/orderRoutes.js';
-import authRoutes from './routes/authRoutes.js';
-import ceoRoutes from './routes/ceoRoutes.js';
-import translationRoutes from './routes/translationRoutes.js';
-import livestockRoutes from './routes/livestockRoutes.js'; 
+const productRoutes = require('./routes/productRoutes.js');
+const orderRoutes = require('./routes/orderRoutes.js');
+const authRoutes = require('./routes/authRoutes.js');
+const ceoRoutes = require('./routes/ceoRoutes.js');
+const translationRoutes = require('./routes/translationRoutes.js');
+const livestockRoutes = require('./routes/livestockRoutes.js'); 
+const advertisementRoutes = require('./routes/advertisementRoutes.js');
 
 // Import Middleware
-import { protect, authorizeCEO } from './middleware/auth.js';
+const { protect, authorizeCEO } = require('./middleware/auth.js');
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Import Background Workers
+const checkAndExpireAds = require('./services/adExpirationCron.js');
 
 const app = express();
 
 // Database Connection
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB successfully"))
+  .then(() => {
+      console.log("Connected to MongoDB successfully");
+      setInterval(checkAndExpireAds, 60 * 60 * 1000);
+  })
   .catch((err) => console.error("MongoDB connection error:", err.message));
 
 // Middleware Setup
 const uploadDir = 'uploads';
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads/'),
-    filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
-});
-const upload = multer({ storage: storage });
 
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, 
@@ -48,18 +45,13 @@ const apiLimiter = rateLimit({
     message: "Too many requests, please try again later."
 });
 
-// CORS Configuration
 const allowedOrigins = [
     process.env.CLIENT_URL,
     'https://trustpay-ecommerce.vercel.app',
     'http://localhost:5173'
 ].filter(Boolean);
 
-app.use(cors({ 
-    origin: allowedOrigins, 
-    credentials: true 
-}));
-
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -81,37 +73,17 @@ app.post('/api/flutterwave/webhook', async (req, res) => {
 
 // --- API ROUTES ---
 app.use('/api', apiLimiter);
+app.use('/api/products', productRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/ceo', protect, authorizeCEO, ceoRoutes);
 app.use('/api/translation', protect, authorizeCEO, translationRoutes);
 app.use('/api/livestock', livestockRoutes); 
+app.use('/api/advertisements', advertisementRoutes);
 
-app.get('/api/products', async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.json(products);
-    } catch (err) {
-        res.status(500).json({ message: "Error fetching products", error: err.message });
-    }
-});
-
-app.post('/api/products', upload.single('image'), async (req, res) => {
-    try {
-        const { name, price, category, stock, description } = req.body;
-        const newProduct = new Product({ name, price, category, stock, description, imagePath: req.file?.path });
-        const savedProduct = await newProduct.save();
-        res.status(201).json({ message: 'Product added!', product: savedProduct });
-    } catch (error) {
-        res.status(400).json({ message: "Error adding product", error: error.message });
-    }
-});
-
-// Port Binding for Render & Export for Vercel
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
 
-export default app;
+module.exports = app;

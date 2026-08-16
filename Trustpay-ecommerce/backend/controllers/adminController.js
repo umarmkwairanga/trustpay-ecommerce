@@ -1,12 +1,16 @@
-const mongoose = import('mongoose');
-const User = import('../models/User');
-const Escrow = import('../models/Escrow');
-const Wallet = import('../models/Wallet');
-const Content = import('../models/Content');
-const AuditLog = import('../models/AuditLog'); // Ensure this is imported
-const { sendNotification } = import('../utils/notificationHelper');
-const { translateText } = import('../utils/aiService');
-const { logAction } = import('../utils/auditHelper');
+const mongoose = require('mongoose');
+const User = require('../models/User');
+const Escrow = require('../models/Escrow');
+const Wallet = require('../models/Wallet');
+const Content = require('../models/Content');
+const AuditLog = require('../models/AuditLog');
+const Product = require('../models/Product');
+const Category = require('../models/Category');
+const AiAuditLog = require('../models/AiAuditLog');
+const slugify = require('slugify');
+const { sendNotification } = require('../utils/notificationHelper');
+const { translateText } = require('../utils/aiService');
+const { logAction } = require('../utils/auditHelper');
 
 // Get Platform Overview Statistics with RBAC
 exports.getDashboardStats = async (req, res) => {
@@ -63,7 +67,7 @@ exports.getDashboardStats = async (req, res) => {
   }
 };
 
-// Fetch Audit Logs (NEW)
+// Fetch Audit Logs
 exports.getAuditLogs = async (req, res) => {
   try {
     const logs = await AuditLog.find()
@@ -227,5 +231,139 @@ exports.updatePageContent = async (req, res) => {
   } catch (err) {
     console.error("CMS Translation Error:", err);
     res.status(500).json({ error: "Failed to update content" });
+  }
+};
+
+// ==========================================
+// AI MODERATION & REVIEW QUEUE MANAGEMENT (NEW)
+// ==========================================
+
+// Get all products/audit logs requiring manual Admin AI review
+exports.getAiReviewsQueue = async (req, res) => {
+  try {
+    const pendingReviews = await AiAuditLog.find({ decision: 'AI_REVIEW_REQUIRED' })
+      .populate('sellerId', 'name email')
+      .populate('productId')
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: pendingReviews.length,
+      pendingReviews
+    });
+  } catch (error) {
+    console.error('Error fetching AI review queue:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to load AI moderation review queue.',
+      error: error.message
+    });
+  }
+};
+
+// Admin action to resolve an AI_REVIEW_REQUIRED product
+exports.resolveAiReview = async (req, res) => {
+  try {
+    const { auditId, action, categoryId, newCategoryName } = req.body; 
+    // Expected actions: 'APPROVE' or 'REJECT'
+
+    if (!auditId || !action) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide auditId and action (APPROVE or REJECT).'
+      });
+    }
+
+    const auditLog = await AiAuditLog.findById(auditId);
+    if (!auditLog) {
+      return res.status(404).json({ success: false, message: 'Audit log record not found.' });
+    }
+
+    const product = await Product.findById(auditLog.productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Associated product not found.' });
+    }
+
+    if (action === 'REJECT') {
+      product.status = 'rejected';
+      await product.save();
+
+      auditLog.decision = 'REJECTED';
+      auditLog.reason = 'Manually rejected by TrustPay Administrator.';
+      await auditLog.save();
+
+      await logAction(req.user._id, 'REJECT_AI_PRODUCT_REVIEW', auditLog.productId, { action: 'REJECT' });
+
+      return res.status(200).json({
+        success: true,
+        message: 'Product listing rejected and disabled by Admin.'
+      });
+    }
+
+    if (action === 'APPROVE') {
+      let targetCatId = categoryId;
+
+      if (newCategoryName) {
+        const slug = slugify(newCategoryName, { lower: true, strict: true });
+        let existingCategory = await Category.findOne({
+          $or: [
+            { slug },
+            { name: { $regex: new RegExp(`^${newCategoryName}$`, 'i') } }
+          ]
+        });
+
+        if (existingCategory) {
+          targetCatId = existingCategory._id;
+        } else {
+          const newCategory = await Category.create({
+            name: newCategoryName,
+            slug,
+            createdBy: req.user._id,
+            approvalMethod: 'admin_override',
+            status: 'active'
+          });
+          targetCatId = newCategory._id;
+        }
+      }
+
+      if (!targetCatId) {
+        return res.status(400).json({
+          success: false,
+          message: 'A valid existing category ID or new category name must be provided for approval.'
+        });
+      }
+
+      const validCategory = await Category.findById(targetCatId);
+      if (!validCategory) {
+        return res.status(400).json({ success: false, message: 'Selected category does not exist.' });
+      }
+
+      product.category = validCategory._id;
+      product.status = 'active';
+      await product.save();
+
+      auditLog.decision = 'APPROVED_NEW_CATEGORY';
+      auditLog.finalCategoryId = validCategory._id;
+      auditLog.reason = 'Manually approved and categorized by TrustPay Administrator.';
+      await auditLog.save();
+
+      await logAction(req.user._id, 'APPROVE_AI_PRODUCT_REVIEW', auditLog.productId, { categoryId: targetCatId });
+
+      return res.status(200).json({
+        success: true,
+        message: 'Product approved, categorized, and published live successfully.',
+        product
+      });
+    }
+
+    return res.status(400).json({ success: false, message: 'Invalid action provided. Use APPROVE or REJECT.' });
+
+  } catch (error) {
+    console.error('Error resolving AI review:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error while resolving review.',
+      error: error.message
+    });
   }
 };

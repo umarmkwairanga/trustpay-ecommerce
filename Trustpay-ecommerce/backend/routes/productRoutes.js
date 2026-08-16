@@ -1,13 +1,24 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import Product from '../models/Product.js'; // Ensure the .js extension is included
+import Product from '../models/Product.js'; 
 
 const router = express.Router();
 
-// GET all products
+// GET all products (with optional search and category filters)
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find();
+        const { category, search } = req.query;
+        let query = {};
+
+        if (category) {
+            query.category = category;
+        }
+
+        if (search) {
+            query.name = { $regex: search, $options: 'i' };
+        }
+
+        const products = await Product.find(query);
         res.json(products);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -18,6 +29,12 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     console.log("DEBUG: POST /api/products received:", req.body);
     try {
+        const { name, price, category } = req.body;
+        
+        if (!name || !price || !category) {
+            return res.status(400).json({ message: "Please include name, price, and category" });
+        }
+
         const newProduct = new Product(req.body);
         await newProduct.save();
         console.log("DEBUG: Product saved successfully");
