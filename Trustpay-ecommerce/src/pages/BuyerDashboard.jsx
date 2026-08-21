@@ -12,7 +12,7 @@ export default function BuyerDashboard() {
     const fetchMyEscrowOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await API.get("/api/orders/my-orders", {
+        const res = await API.get("/orders/my-orders", {
           headers: { Authorization: `Bearer ${token}` }
         });
         setOrders(res.data);
@@ -34,7 +34,7 @@ export default function BuyerDashboard() {
     setActionLoading(true);
     try {
       const token = localStorage.getItem("token");
-      await API.post("/api/orders/verify", { reference }, {
+      await API.post("/orders/verify", { reference }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       alert("💥 Delivery Confirmed! Escrow milestone cleared and funds released.");

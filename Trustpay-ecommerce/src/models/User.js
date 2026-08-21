@@ -7,9 +7,49 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     role: { 
         type: String, 
-        enum: ['Super Admin', 'Finance Officer', 'Support Manager', 'Compliance Officer', 
-               'Restaurant Manager', 'Travel Vendor', 'Rider', 'Customer', 'Content Moderator'], 
+        enum: [
+            // Existing roles
+            'Super Admin', 
+            'Finance Officer', 
+            'Support Manager', 
+            'Compliance Officer', 
+            'Restaurant Manager', 
+            'Travel Vendor', 
+            'Rider', 
+            'Customer', 
+            'Content Moderator',
+            // Six new provider roles & standard system types
+            'buyer',
+            'seller',
+            'rider',
+            'admin',
+            'ceo',
+            'flight_provider',
+            'hotel_provider',
+            'restaurant_provider',
+            'vehicle_provider',
+            'real_estate_provider',
+            'service_provider'
+        ], 
         default: 'Customer' 
+    },
+    // Provider Verification and Profile Fields
+    status: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected', 'suspended'],
+        default: 'approved'
+    },
+    businessName: { type: String },
+    businessAddress: { type: String },
+    phone: { type: String },
+    country: { type: String },
+    state: { type: String },
+    city: { type: String },
+    verificationDocuments: [{ type: String }],
+    bankDetails: {
+        accountName: String,
+        accountNumber: String,
+        bankName: String
     },
     // 2FA Fields
     twoFactorSecret: { type: String },

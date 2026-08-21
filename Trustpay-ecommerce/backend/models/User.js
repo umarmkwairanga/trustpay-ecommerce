@@ -15,7 +15,24 @@ const userSchema = new mongoose.Schema({
     
     role: { 
         type: String, 
-        enum: ['buyer', 'seller', 'delivery', 'admin', 'staff'], 
+        enum: [
+            'buyer',
+            'seller',
+            'rider',
+            'service_provider',
+            'restaurant',
+            'hotel',
+            'flight',
+            'vehicle',
+            'real_estate',
+            'event',
+            'mentor', // Added mentor role
+            'admin',
+            'super_admin',
+            'ceo',
+            'delivery',
+            'staff'
+        ], 
         default: 'buyer' 
     },
 
@@ -47,6 +64,34 @@ const userSchema = new mongoose.Schema({
         bankCode: { type: String }, 
         accountName: { type: String },
         accountNumber: { type: String }
+    },
+
+    // Added Mentor Profile Sub-Schema
+    mentorProfile: {
+        professionalTitle: { type: String },
+        qualifications: [{ type: String }],
+        institutionOrCompany: { type: String },
+        yearsOfExperience: { type: Number, default: 0 },
+        expertise: [{ type: String }],
+        biography: { type: String },
+        languages: [{ type: String }],
+        categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MentorshipCategory' }],
+        teachingExperience: { type: String },
+        verificationDocuments: [{ type: String }],
+        availability: { type: mongoose.Schema.Types.Mixed },
+        bankInformation: {
+            bankName: { type: String },
+            accountNumber: { type: String },
+            accountName: { type: String },
+            flutterwaveSubaccountId: { type: String }
+        },
+        verificationStatus: {
+            type: String,
+            enum: ['pending', 'approved', 'rejected', 'suspended'],
+            default: 'pending'
+        },
+        rating: { type: Number, default: 0 },
+        totalReviews: { type: Number, default: 0 }
     }
 }, { timestamps: true });
 

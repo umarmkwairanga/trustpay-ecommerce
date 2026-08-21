@@ -46,11 +46,20 @@ app.use('/api/advertisements', advertisementRoutes);
 
 // Booking, Inventory, Provider, Admin & CEO Routes
 app.use('/api/business/inventory', bookingInventoryRoutes);
-app.use('/api/bookings', bookingInventoryRoutes);           // Public search & inventory lookups
+app.use('/api/bookings', bookingInventoryRoutes);          // Public search & inventory lookups
 app.use('/api/bookings', customerBookingRoutes);            // Customer booking initiation, history & fulfillment
 app.use('/api/provider/bookings', providerBookingRoutes);   // Provider booking management
 app.use('/api/admin', adminCeoBookingRoutes);               // Admin provider verification
 app.use('/api/ceo', adminCeoBookingRoutes);                 // CEO platform KPIs
+
+// Platform Settings Endpoint (Fixes Footer 404)
+app.get('/api/settings', (req, res) => {
+    res.json({
+        supportEmail: 'support@trustpayecommerce.com',
+        supportPhone: '+234 800 TRUSTPAY',
+        disputeEmail: 'disputes@trustpayecommerce.com'
+    });
+});
 
 app.get('/', (req, res) => res.send('TrustPayEcommerce API is running...'));
 
