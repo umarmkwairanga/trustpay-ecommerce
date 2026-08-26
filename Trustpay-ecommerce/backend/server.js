@@ -15,6 +15,15 @@ import customerBookingRoutes from './routes/customerBookingRoutes.js';
 import providerBookingRoutes from './routes/providerBookingRoutes.js';
 import adminCeoBookingRoutes from './routes/adminCeoBookingRoutes.js';
 
+// New Ecosystem & CEO Control Center Routes
+import learnerRoutes from './routes/learnerRoutes.js';
+import employerRoutes from './routes/employerRoutes.js';
+import jobSeekerRoutes from './routes/jobSeekerRoutes.js';
+import opportunityRoutes from './routes/opportunityRoutes.js';
+import applicationRoutes from './routes/applicationRoutes.js';
+import ceoRoutes from './routes/ceoRoutes.js';
+import ecosystemRoutes from './routes/ecosystemRoutes.js';
+
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -52,6 +61,15 @@ app.use('/api/provider/bookings', providerBookingRoutes);   // Provider booking 
 app.use('/api/admin', adminCeoBookingRoutes);               // Admin provider verification
 app.use('/api/ceo', adminCeoBookingRoutes);                 // CEO platform KPIs
 
+// New Ecosystem Roles & Master CEO Operations Routes
+app.use('/api/learners', learnerRoutes);
+app.use('/api/employers', employerRoutes);
+app.use('/api/job-seekers', jobSeekerRoutes);
+app.use('/api/opportunities', opportunityRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api/ceo', ceoRoutes);                             // Master AI-powered CEO control endpoints
+app.use('/api/ecosystem', ecosystemRoutes);                 // Full-platform cross-vertical ecosystem data
+
 // Platform Settings Endpoint (Fixes Footer 404)
 app.get('/api/settings', (req, res) => {
     res.json({
@@ -66,5 +84,5 @@ app.get('/', (req, res) => res.send('TrustPayEcommerce API is running...'));
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`TrustPayEcommerceEcommerce server running on port ${PORT}`);
+    console.log(`TrustPayEcommerce server running on port ${PORT}`);
 });
