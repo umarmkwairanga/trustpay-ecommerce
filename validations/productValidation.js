@@ -1,3 +1,3 @@
+export const productSchema = {};
 export const validateProduct = (req, res, next) => { next(); };
-
-export default { validateProduct };
+export default { productSchema, validateProduct };
