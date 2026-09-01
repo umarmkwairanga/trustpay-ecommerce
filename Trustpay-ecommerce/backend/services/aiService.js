@@ -1,14 +1,23 @@
 const { GoogleGenAI } = require('@google/genai');
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const apiKey = process.env.GEMINI_API_KEY;
+let ai = null;
+
+if (apiKey) {
+    ai = new GoogleGenAI({ apiKey });
+}
 
 /**
  * Evaluates product listings for safety, prohibited items, and category matching.
  */
 exports.evaluateProductListing = async (productData, existingCategories) => {
     try {
+        if (!ai) {
+            throw new Error('AI_SERVICE_UNAVAILABLE: GEMINI_API_KEY not configured.');
+        }
+
         const prompt = `
-        You are an e-commerce platform compliance and categorization AI for TrustPayEcommerceEcommerce.
+        You are an e-commerce platform compliance and categorization AI for TrustPayEcommerce.
         Analyze the following product listing:
         - Name: ${productData.name}
         - Description: ${productData.description}
@@ -40,14 +49,14 @@ exports.evaluateProductListing = async (productData, existingCategories) => {
         const cleanJson = textResponse.replace(/^```json\s*|\s*```$/g, '');
         return JSON.parse(cleanJson);
     } catch (error) {
-        console.error('AI Moderation Service Error:', error);
-        // Fallback to manual review if AI fails
+        console.warn('AI Moderation Service Warning / Fallback:', error.message);
+        // Fallback to manual review if AI is unconfigured or fails
         return {
             decision: 'AI_REVIEW_REQUIRED',
             categoryId: null,
             newCategoryName: productData.proposedCategory || null,
             confidence: 0.0,
-            reason: 'AI service fallback due to processing error.'
+            reason: 'AI service fallback due to processing error or missing API key.'
         };
     }
 };

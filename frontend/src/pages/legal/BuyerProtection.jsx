@@ -5,7 +5,7 @@ const BuyerProtection = () => {
     return (
         <LegalLayout title="Buyer Protection Policy">
             <h2 className="text-2xl font-semibold mt-4">1. Scope of Coverage</h2>
-            <p>TrustPayEcommerceEcommerce’s Buyer Protection ensures that your funds are held securely until the transaction is successfully completed. You are protected if the item you receive is significantly different from its description or if it fails to arrive.</p>
+            <p>TrustPayEcommerce’s Buyer Protection ensures that your funds are held securely until the transaction is successfully completed. You are protected if the item you receive is significantly different from its description or if it fails to arrive.</p>
 
             <h2 className="text-2xl font-semibold mt-4">2. Eligibility</h2>
             <p>To be eligible for protection, the transaction must have been processed entirely through the TrustPayEcommerceEcommerce Escrow system.</p>

@@ -1,4 +1,4 @@
-const axios = import('axios');
+import axios from 'axios';
 
 // We will load this from your .env file
 const INDIGENIUS_API_KEY = process.env.INDIGENIUS_API_KEY;
@@ -24,4 +24,4 @@ async function getVoiceTranslation(text, language = 'yoruba') {
     }
 }
 
-export default = { getVoiceTranslation };
+export default { getVoiceTranslation };
